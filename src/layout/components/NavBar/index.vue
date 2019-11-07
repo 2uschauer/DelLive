@@ -1,7 +1,7 @@
 <template>
   <div class="navBar">
     <div class="navBarLeft"><svg-icon icon-class="main" class="navBarIcon" /><div>DelLive</div></div>
-    <div class="navBarRight">
+    <div v-if="menuList.length>0" class="navBarRight">
       <pay-nav-menu
         theme="dark"
         mode="horizontal"
@@ -12,7 +12,7 @@
           v-for="(item, index) in menuList"
           :key="index"
           :class="item.name === active ? 'payui___navmenu-item-active': ''"
-          :index="item.name"
+          :index="item.name || ''"
           :label="item.name"
         />
       </pay-nav-menu>
@@ -27,7 +27,8 @@ export default {
     menuList: {
       require: true,
       type: Array,
-      default: null
+      // eslint-disable-next-line
+      default: []
     },
     active: {
       require: true,
@@ -36,7 +37,7 @@ export default {
     }
   },
   methods: {
-    handleSelect(index, indexPath) {
+    handleSelect(index) {
       this.$emit("changeRoute", this.menuList, index);
     },
     async logOut() {

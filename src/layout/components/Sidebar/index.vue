@@ -9,7 +9,7 @@
       :key="index"
       :class="item.name === subMenuActive ? 'payui___navmenu-item-active': ''"
       :index="item.name"
-      :label="item.name"
+      :label="item.meta.title"
     />
   </pay-nav-menu>
 </template>
