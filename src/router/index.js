@@ -37,19 +37,14 @@ export const constantRoutes = [{
 }, {
   path: "/live",
   name: "Live",
-  redirect: "/live/test1",
+  redirect: "/live/index",
   component: Layout,
   meta: { title: "Live", icon: "live" },
   children: [{
-    path: "/live/test1",
-    name: "livetest1",
-    component: () => import("@/views/live/test1/index"),
-    meta: { title: "test1", icon: "test1" }
-  }, {
-    path: "/live/test2",
-    name: "livetest2",
-    component: () => import("@/views/live/test2/index"),
-    meta: { title: "test1", icon: "test1" }
+    path: "/live/index",
+    name: "LiveIndex",
+    component: () => import("@/views/live/index"),
+    meta: { title: "Live", icon: "test1" }
   }]
 }, {
   path: "*",
