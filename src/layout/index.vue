@@ -1,93 +1,89 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
-    <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
-      </div>
-      <app-main />
+  <div>
+    <NavBar :menu-list="menuList" :active="menuActive" @changeRoute="changeRoute" />
+    <div class="SideBarAndAppMain">
+      <SideBar class="sideBar" :sub-menu-list="subMenuList" :sub-menu-active="subMenuActive" @changeRoute="changeRoute" />
+      <AppMain />
     </div>
   </div>
 </template>
-
 <script>
-import { Navbar, Sidebar, AppMain } from './components'
-import ResizeMixin from './mixin/ResizeHandler'
-
+import { SideBar, NavBar, AppMain } from "./components";
 export default {
-  name: 'Layout',
+  name: "Layout",
   components: {
-    Navbar,
-    Sidebar,
+    SideBar,
+    NavBar,
     AppMain
   },
-  mixins: [ResizeMixin],
-  computed: {
-    sidebar() {
-      return this.$store.state.app.sidebar
-    },
-    device() {
-      return this.$store.state.app.device
-    },
-    fixedHeader() {
-      return this.$store.state.settings.fixedHeader
-    },
-    classObj() {
-      return {
-        hideSidebar: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
-      }
-    }
+  data() {
+    return {
+      menuList: [],
+      subMenuList: [],
+      menuActive: "",
+      subMenuActive: ""
+    };
+  },
+  created() {
+    this.getMenuList();
   },
   methods: {
-    handleClickOutside() {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
+    getMenuList() {
+      const { routes } = this.$router.options;
+      let menuList = [];
+      for (let i = 0; i < routes.length; ++i) {
+        if (!routes[i].hidden) menuList = menuList.concat(routes[i]);
+      }
+      this.menuList = menuList.slice();
+      this.getSubMenuList(menuList);
+    },
+    getSubMenuList(menuList) {
+      const { matched } = this.$route;
+      const parentRoute = matched[0] || {};
+      this.menuActive = parentRoute.name.slice();
+      this.subMenuActive = matched[1].name.slice();
+      for (let i = 0; i < menuList.length; ++i) {
+        if (menuList[i].path === parentRoute.path) {
+          this.subMenuList = menuList[i].children.slice();
+          break;
+        }
+      }
+    },
+    changeRoute(menuList, index) {
+      menuList.map((item) => {
+        if (item.name === index) {
+          this.$router.push({ path: `${item.path}` }, () => {
+            this.getSubMenuList(menuList);
+          });
+        }
+      });
+    }
+  }
+};
+</script>
+<style lang="scss" scoped>
+@import "~@/styles/mixin.scss";
+@import "~@/styles/variables.scss";
+.SideBarAndAppMain{
+  display: flex;
+  width:100%;
+  height:calc(100vh - 64px);
+  background: #e8e8e8 !important;
+  @include clearfix;
+  position: relative;
+}
+.sideBar{
+  background: #e8e8e8 !important;
+  border-color:#D8D9E0;
+  box-shadow: 0 2px 3px 0px rgba(0,0,0,0.08);
+  /deep/
+  .payui___navmenu-item{
+    background: transparent;
+    &.payui___navmenu-item-active{
+      background: #D8D9E0;
+      border-left: 3px solid #e75213;
+      padding-left: 17px;
     }
   }
 }
-</script>
-
-<style lang="scss" scoped>
-  @import "~@/styles/mixin.scss";
-  @import "~@/styles/variables.scss";
-
-  .app-wrapper {
-    @include clearfix;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    &.mobile.openSidebar{
-      position: fixed;
-      top: 0;
-    }
-  }
-  .drawer-bg {
-    background: #000;
-    opacity: 0.3;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    position: absolute;
-    z-index: 999;
-  }
-
-  .fixed-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 9;
-    width: calc(100% - #{$sideBarWidth});
-    transition: width 0.28s;
-  }
-
-  .hideSidebar .fixed-header {
-    width: calc(100% - 54px)
-  }
-
-  .mobile .fixed-header {
-    width: 100%;
-  }
 </style>
