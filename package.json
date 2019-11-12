@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "live appliaction",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --mode development --profile --progress --config build/webpack.config.js",
-    "build": "cross-env NODE_ENV=production webpack --mode production --profile --progress"
+    "dev-client": "cross-env NODE_ENV=development webpack-dev-server --open --mode development --profile --progress --config build/webpack.config.dev.js",
+    "build": "cross-env NODE_ENV=production webpack --mode production --profile --progress --config build/webpack.config.prd.js"
   },
   "repository": {
     "type": "git",
@@ -69,6 +69,7 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^3.9.0",
+    "webpack-merge": "^4.2.2"
   }
 }

@@ -1,63 +1,16 @@
-const isProd=process.env.NODE_ENV==='production';
 const path=require('path');
-const MiniCssExtractPlugin=require('mini-css-extract-plugin');
 const webpack=require('webpack');
-const HtmlWebpackPlugin=require('html-webpack-plugin'); // 自动生成index.html
-const CleanWebpackPlugin=require('clean-webpack-plugin'); // 清理垃圾文件
 const VueLoaderPlugin = require('vue-loader/lib/plugin'); // vue加载器
 const PostStylus=require('poststylus'); // stylus加前缀
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 清理垃圾文件
 function resolve(dir) {
-  console.log(path.join(__dirname, '..', dir))
   return path.join(__dirname, '..', dir)
 }
-const cssConfig = [
-  isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',{
-    loader: 'css-loader',
-    options: {
-        sourceMap: !isProd
-    }
-  },
-  'postcss-loader'
-]
-const stylusConfig = [
-  isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',{
-    loader: 'css-loader',
-    options: {
-        sourceMap: !isProd
-    }
-  },{
-    loader: 'stylus-loader',
-    options: {
-        sourceMap: !isProd
-    }
-  }];
 module.exports = {
   context: path.resolve(__dirname,'../'),
   entry: ['babel-polyfill','./src/main.js'],
-  output: {
-    path: path.resolve(__dirname, '../dist/src'), // 打包目录
-    filename: isProd?'javascript/[name].[hash:8].js':'[name].js', // [name] 是entry的key
-    publicPath: isProd?'/':'/'
-  },
-  devtool: isProd ? false : 'eval-source-map',
   module: {
     rules: [{
-      test: /\.css$/,
-      use:cssConfig
-    },{
-      test: /\.styl(us)?$/,
-      use: stylusConfig
-    },{
-      test: /\.vue$/,
-      loader: 'vue-loader',
-      options: {
-        hotReload: true, // 热重载
-        loaders:{
-          css: cssConfig,
-          stylus: stylusConfig
-        }
-      },
-    },{
       test: /\.js$/,
       loader: 'babel-loader',
       query:{
@@ -73,12 +26,12 @@ module.exports = {
       }
     },{
       test: /\.(png|jpe?g|gif|bmp|svg)$/,
-      include: [resolve('src/icons'), resolve('src/static')],
+      exclude: [resolve('src/icons'), resolve('src/static')],
       use: [{
         loader: 'url-loader',
         options: { // 配置图片编译路径
           limit: 8192, // 小于8k将图片转换成base64
-          name: '[name].[hash:8].[ext]',
+          name: '[hash:8].[name].[ext]',
           outputPath: 'img/'
         }
       },{
@@ -101,46 +54,25 @@ module.exports = {
       exclude: [resolve('src/static')],
       options:{
           limit:8192,
-          name:'fonts/[name].[hash:8].[ext]'
+          name:'fonts/[hash:8].[name].[ext]'
       }
     }]
-  },
-  devServer:isProd ? {} : {
-    contentBase: resolve(__dirname, 'dist') // 将 dist 目录下的文件，作为可访问文件。
-    ,compress: true // 开启Gzip压缩
-    ,host: 'localhost' // 设置服务器的ip地址，默认localhost
-    ,port: 9001 // 端口号
-    ,open:true // 自动打开浏览器
   },
   resolve: {
     extensions: ['.js', '.vue', '.styl', '.json'], // import引入文件的时候不用加后缀
     modules: [ // 配置路径别名
-      'node_modules'
-      ,resolve(__dirname, 'src/components')
-      ,resolve(__dirname, 'src/assets')
+      'node_modules',
+      resolve(__dirname, 'src/components'),
+      resolve(__dirname, 'src/assets'),
     ],
     alias: {
-      '@': resolve('src')
+      '@': path.resolve(__dirname, '../src'),
     }
   },
   plugins: [
     new VueLoaderPlugin(), // vue加载器
     new webpack.BannerPlugin(`xs build at ${Date.now()}`), // 打包后在.js/.css页头的时间（并没什么卵用）
-    // new CleanWebpackPlugin([resolve(__dirname, 'dist')]), // 每次打包之前清理打包目录
-    new HtmlWebpackPlugin({
-      template: 'index.html' // 引入模版
-      // ,favicon: resolve(__dirname, 'src/static/images/favicon.ico')
-      ,filename: 'index.html'
-      ,minify: { // 对index.html压缩
-        collapseWhitespace: isProd // 去掉index.html的空格
-        ,removeAttributeQuotes: isProd // 去掉引号
-      }
-      ,hash: true // 去掉上次浏览器的缓存（使浏览器每次获取到的是最新的html）
-    }),
-    new MiniCssExtractPlugin({ // 分离css
-      filename: isProd?'stylesheets/[name].[hash:8].css':'[name].css',
-      allChunks: true
-    }),
+    new CleanWebpackPlugin(), // 每次打包之前清理打包目录
     new webpack.NamedModulesPlugin(), // 热更新 HMR
     new webpack.HotModuleReplacementPlugin(), // 热加载插件 HMR
     new webpack.LoaderOptionsPlugin({ // stylus加前缀
