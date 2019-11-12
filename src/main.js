@@ -1,4 +1,4 @@
-// if (module.hot) { module.hot.accept() }
+if (module.hot) { module.hot.accept() }
 import 'babel-polyfill'
 import Vue from 'vue'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets

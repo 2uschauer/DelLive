@@ -1,3 +1,4 @@
+'use strict'
 const path=require('path');
 const webpack=require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin'); // vue加载器
@@ -11,6 +12,16 @@ module.exports = {
   entry: ['babel-polyfill','./src/main.js'],
   module: {
     rules: [{
+      test: /\.(js|vue)$/,
+      loader: 'eslint-loader',
+      enforce: "pre",
+      exclude: /node_modules/,
+      include: [resolve('src')],
+      options: { // 这里的配置项参数将会被传递到 eslint 的 CLIEngine
+        formatter: require('eslint-friendly-formatter'), // 指定错误报告的格式规范
+        cache: true,
+      }
+    },{
       test: /\.js$/,
       loader: 'babel-loader',
       query:{
