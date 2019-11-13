@@ -76,13 +76,35 @@ const webpackConfig = merge(baseWebpackConfig,{
     }]
   },
   devServer: {
+    clientLogLevel: 'warning',
+    historyApiFallback: true,
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
+    proxy: {
+      '/': {
+        target: 'http://localhost:9880',
+        secure: false,
+        bypass: function(req) {
+          if(req.headers.accept && req.headers.accept.indexOf('html') !== -1) {
+            console.log('Skipping proxy for browser request.')
+            return '/index.html'
+          }
+        }
+      }
+    },
     contentBase: resolve(__dirname, 'dist'), // 将 dist 目录下的文件，作为可访问文件。
     compress: true, // 开启Gzip压缩
-    host: 'localhost', // 设置服务器的ip地址，默认localhost
-    port: 9000, // 端口号
+    host: '0.0.0.0', // 设置服务器的ip地址，默认localhost
+    port: 9500, // 端口号
     open:true, // 自动打开浏览器
-    hot: true
+    hot: true,
+    watchOptions: {
+      poll: false
+    }
   },
+  devtool: 'source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
