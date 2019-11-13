@@ -11,6 +11,7 @@ import '@/styles/index.scss' // global css
 
 import App from './App'
 import router from './router'
+import store from './store'
 
 import '@/icons' // icon
 locale.use(lang)
@@ -21,5 +22,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
