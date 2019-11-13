@@ -1,3 +1,3 @@
 <template>
-  <div>Hello Vue</div>
+  <div>test push</div>
 </template>
