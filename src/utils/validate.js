@@ -1,20 +1,14 @@
-/**
- * Created by PanJiaChen on 16/11/18.
- */
+import urlRegx from 'url-regex'
 
-/**
- * @param {string} path
- * @returns {Boolean}
- */
-export function isExternal(path) {
-  return /^(https?:|mailto:|tel:)/.test(path)
+function validateURL(url) {
+  return urlRegx({ exact: true, strict: true }).test(url)
 }
 
-/**
- * @param {string} str
- * @returns {Boolean}
- */
-export function validUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+function validatePrototol(str) {
+  return /^(https?:|mailto:|tel:)/.test(str)
+}
+
+export default {
+  validateURL,
+  validatePrototol
 }

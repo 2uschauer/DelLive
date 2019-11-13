@@ -1,85 +1,75 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import CONSTATNT from '@/constant'
+import auth from './auth'
+import { fileReaderPromisefy as fileReader } from './index'
 
-// create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  baseURL: CONSTATNT.BASE_URL,
+  timeout: 45000,
+  headers: {
+    'Content-Type': 'application/JSON',
+    'X-Request-With': 'XMLHttpRequest'
+  },
 })
-
-// request interceptor
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
-
-    if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
-    }
+    const token = store.getters.token
+    if (token) config.headers['X-Authorization'] = token
     return config
+  }
+)
+service.interceptors.response.use(
+  (response) => {
+    const res = response.data
+    const { responseCode } = res
+    if (!responseCode) return res
+    if (responseCode === CONSTATNT.SUCCESS_CODE) {
+      return Promise.resolve(res)
+    } else {
+      return Promise.reject(res)
+    }
   },
-  error => {
-    // do something with request error
-    console.log(error) // for debug
+  async (error) => {
+    if (error && error.response) {
+      const { response } = error
+      const data = await handleErrorData(response)
+      if (data && data.responseCode === CONSTATNT.LOGIN_USERNAME_OR_PASSWORD_FAIL_CODE) {
+        Message.warning(`${data.responseMsg}`)
+      } else if (auth.checkAuth(data)) {
+        Message.warning('登录超时，请重新登录！')
+        auth.logout()
+      }
+      return Promise.reject(error.response.data)
+    }
     return Promise.reject(error)
   }
 )
 
-// response interceptor
-service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-  */
-
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
-  response => {
-    const res = response.data
-
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
+function handleErrorData({ data }) {
+  return new Promise((resolve) => {
+    function parseString(str) {
+      let res = null
+      try {
+        res = JSON.parse(str)
+      } catch (e) {
+        console.log(`[Error]-[JSON.parse()] error: ${e} rawData: ${data}`)
+        res = {}
       }
-      return Promise.reject(new Error(res.message || 'Error'))
-    } else {
       return res
     }
-  },
-  error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject(error)
-  }
-)
-
+    if (data && data instanceof Blob) {
+      fileReader(data,'readAsText')
+        .then((fileReader) => {
+          return fileReader.result
+        })
+        .then((res) => {
+          resolve(parseString(res))
+        })
+    } else {
+      resolve(data)
+    }
+  })
+}
 export default service

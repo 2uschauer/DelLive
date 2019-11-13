@@ -1,15 +1,36 @@
-import Cookies from 'js-cookie'
+import store from '@/store'
+import router from '@/router'
+import CONSTANT from '@/constant'
+import sessionHandler from './sessionHandler'
 
-const TokenKey = 'vue_admin_template_token'
-
-export function getToken() {
-  return Cookies.get(TokenKey)
+function getUserInfo() {
+  return sessionHandler.getItem('userInfo')
 }
 
-export function setToken(token) {
-  return Cookies.set(TokenKey, token)
+function setUserInfo(userInfo) {
+  sessionHandler.setItem('userInfo',userInfo)
 }
 
-export function removeToken() {
-  return Cookies.remove(TokenKey)
+function clearAllInfo() {
+  sessionStorage.clear()
+}
+
+function logout() {
+  store.dispatch('Logout')
+    .then(() => {
+      router.push({ path: '/login' })
+      window.location.reload()
+    })
+}
+
+function checkAuth(err) {
+  return (err && err.responseCode === CONSTANT.SESSION_EXPRIE_CODE)
+}
+
+export default {
+  getUserInfo,
+  setUserInfo,
+  clearAllInfo,
+  logout,
+  checkAuth
 }
