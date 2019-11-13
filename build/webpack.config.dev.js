@@ -2,6 +2,7 @@
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.config.base')
 const path=require('path');
+const webpack=require('webpack');
 const MiniCssExtractPlugin=require('mini-css-extract-plugin');
 const HtmlWebpackPlugin=require('html-webpack-plugin'); // 自动生成index.html
 function resolve(dir) {
@@ -83,6 +84,9 @@ const webpackConfig = merge(baseWebpackConfig,{
     hot: true
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       template: 'index.html', // 引入模版
       favicon: 'src/static/images/favicon.ico',

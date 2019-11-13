@@ -81,11 +81,12 @@ module.exports = {
     }
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': require('./config/' + process.env.NODE_ENV.trim() + '.env')
+    }),
     new VueLoaderPlugin(), // vue加载器
     new webpack.BannerPlugin(`xs build at ${Date.now()}`), // 打包后在.js/.css页头的时间（并没什么卵用）
     new CleanWebpackPlugin(), // 每次打包之前清理打包目录
-    new webpack.NamedModulesPlugin(), // 热更新 HMR
-    new webpack.HotModuleReplacementPlugin(), // 热加载插件 HMR
     new webpack.LoaderOptionsPlugin({ // stylus加前缀
       options: {
         stylus: {
