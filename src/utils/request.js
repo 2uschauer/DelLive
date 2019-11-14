@@ -35,7 +35,7 @@ service.interceptors.response.use(
     if (error && error.response) {
       const { response } = error
       const data = await handleErrorData(response)
-      if (data && data.responseCode === CONSTATNT.LOGIN_USERNAME_OR_PASSWORD_FAIL_CODE) {
+      if (data && data.responseCode === CONSTATNT.SIGN_IN_USERNAME_OR_PASSWORD_FAIL_CODE) {
         Message.warning(`${data.responseMsg}`)
       } else if (auth.checkAuth(data)) {
         Message.warning('登录超时，请重新登录！')

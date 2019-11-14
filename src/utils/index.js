@@ -1,8 +1,8 @@
 import CONSTANT from '@/constant'
 
 function shouldShowErrorMsg(err) {
-  const { SESSION_EXPRIE_CODE, LOGIN_USERNAME_OR_PASSWORD_FAIL_CODE } = CONSTANT
-  return !!(err && err.responseCode !== SESSION_EXPRIE_CODE && err.responseCode !== LOGIN_USERNAME_OR_PASSWORD_FAIL_CODE)
+  const { SESSION_EXPRIE_CODE, SIGN_IN_USERNAME_OR_PASSWORD_FAIL_CODE } = CONSTANT
+  return !!(err && err.responseCode !== SESSION_EXPRIE_CODE && err.responseCode !== SIGN_IN_USERNAME_OR_PASSWORD_FAIL_CODE)
 }
 
 function downloadBlobData(blob, name, type) {
