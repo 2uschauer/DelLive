@@ -29,13 +29,29 @@ const app = {
     },
   },
   actions: {
-    login({ commit }, userInfo) {
+    signIn({ commit }, userInfo) {
       const params = {
         userName: userInfo.userName.trim(),
         password: userInfo.password.trim()
       }
       return new Promise((resolve,reject) => {
-        userAPI.login(params)
+        userAPI.signIn(params)
+          .then((res) => {
+            commit('SET_USERNAME', params.userName)
+            resolve(res)
+          }).catch((error) => {
+            reject(error)
+          })
+      })
+    },
+    signUp({ commit }, userInfo) {
+      const params = {
+        userName: userInfo.userName.trim(),
+        password: userInfo.password.trim(),
+        email: userInfo.email.trim()
+      }
+      return new Promise((resolve,reject) => {
+        userAPI.signUp(params)
           .then((res) => {
             commit('SET_USERNAME', params.userName)
             resolve(res)
@@ -51,7 +67,7 @@ const app = {
       commit('SET_TOKEN', userInfo.token)
     },
     getRoutesByToken({ commit, state }, rawToken) {
-      const token = `Bearer ${token}`
+      const token = `Bearer ${rawToken}`
       commit('SET_TOKEN', token)
       return new Promise((resolve, reject) => {
         userAPI.getRoutesByToken()
@@ -64,7 +80,7 @@ const app = {
               router.setRoutes(routes,router)
               resolve()
             }
-          }).cathc((error) => {
+          }).catch((error) => {
             reject(error)
           })
       })

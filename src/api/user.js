@@ -2,9 +2,18 @@ import CONSTANT from '@/constant'
 import request from '@/utils/request'
 import qs from 'query-string'
 
-function login(params) {
+function signIn(params) {
   return request({
     url: `/user/auth/token`,
+    method: 'post',
+    data: qs.stringify(params),
+    headers: CONSTANT.FORM_HEADERS,
+  })
+}
+
+function signUp(params) {
+  return request({
+    url: `/user/signUp`,
     method: 'post',
     data: qs.stringify(params),
     headers: CONSTANT.FORM_HEADERS,
@@ -26,7 +35,8 @@ function logout() {
 }
 
 export default {
-  login,
+  signIn,
   getRoutesByToken,
-  logout
+  logout,
+  signUp
 }
