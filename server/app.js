@@ -16,6 +16,41 @@ if (config.env !== 'env') {
     })
 }
 require('./utils/expressMiddleware')(app)
+
+app.use('/user/auth/token', (req, res) => {
+  res.json({
+    responseCode: '000000',
+    responseMsg: '登陆成功',
+    data: '111'
+  })
+})
+
+app.use('/user/auth/getRoutesByToken', (req, res) => {
+  res.json({
+    responseCode: '000000',
+    responseMsg: '获取菜单列表成功',
+    data: [{
+      menuCode: 'live',
+      children: [{
+        menuCode: 'liveList',
+        children: null
+      },{
+        menuCode: 'liveDetail',
+        children: null
+      }]
+    },{
+      menuCode: 'Blog',
+      children: [{
+        menuCode: 'BlogList',
+        children: null
+      },{
+        menuCode: 'BlogDetail',
+        children: null
+      }]
+    }]
+  })
+})
+
 app.use(function(error, req, res, next) {
   TagPlatForm.error('Error error is: ',req.url, error)
   res.json(returnJson.RESULT.SYSTEM_FAIL, 500)
