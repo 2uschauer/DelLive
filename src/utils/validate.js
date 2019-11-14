@@ -1,14 +1,19 @@
 import urlRegx from 'url-regex'
+import * as emailRegx from 'email-validator'
 
-function validateURL(url) {
+export function validateURL(url) {
   return urlRegx({ exact: true, strict: true }).test(url)
 }
 
-function validatePrototol(str) {
-  return /^(https?:|mailto:|tel:)/.test(str)
+export function validateProtocol(Protocol) {
+  return /^(https?:|mailto:|tel:)/.test(Protocol)
 }
 
-export default {
-  validateURL,
-  validatePrototol
+export function validateEmail(email) {
+  console.log(emailRegx.validate(email))
+  return emailRegx.validate(email)
+}
+
+export function validateUserName(userName) {
+  return /^([a-zA-Z0-9]|[-])/.test(userName)
 }
