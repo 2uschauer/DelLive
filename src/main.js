@@ -12,6 +12,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import router from './router'
 import store from './store'
+import '@/routerControl'
 
 import '@/icons' // icon
 locale.use(lang)
