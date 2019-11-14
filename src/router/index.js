@@ -1,28 +1,28 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { setRoutes } from './utils'
 
 Vue.use(Router)
 
 import NotFound from '@/views/404'
-import Live from '@/views/Live'
-export const constantRoutes = [
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-  {
-    path: '/Live',
-    component: Live,
-  },
-  {
-    path: '*',
-    component: NotFound,
-    hidden: true
+export const constantRoutes = [{
+  path: '/login',
+  component: () => import('@/views/login/index'),
+  hidden: true,
+},{
+  path: '*',
+  component: NotFound,
+  hidden: true
+}]
+const content = require.context(__dirname, false, /^((?!index).)+\.js/)
+const routerMap = content.keys().map((item) => content(item).default)
+console.log(routerMap,'routerMap')
+class MyRouter extends Router {
+  setRoutes(routes, currentRoutes) {
+    setRoutes(routes, currentRoutes, routerMap, constantRoutes)
   }
-]
-
-const router = new Router({
+}
+const router = new MyRouter({
   mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
