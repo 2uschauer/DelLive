@@ -1,3 +1,6 @@
 <template>
-  <div>test push</div>
+  <div>
+    <div>live</div>
+    <router-view/>
+  </div>
 </template>
