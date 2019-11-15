@@ -1,5 +1,5 @@
 {
-  "name": "dellive",
+  "name": "dielive",
   "version": "1.0.0",
   "description": "live appliaction",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Delbra/DelLive.git"
+    "url": "git+https://github.com/Delbra/DieLive.git"
   },
   "keywords": [
     "live"
@@ -18,9 +18,9 @@
   "author": "Euphausiacea",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Delbra/DelLive/issues"
+    "url": "https://github.com/Delbra/DieLive/issues"
   },
-  "homepage": "https://github.com/Delbra/DelLive#readme",
+  "homepage": "https://github.com/Delbra/DieLive#readme",
   "dependencies": {
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
