@@ -32,6 +32,9 @@ app.use('/user/auth/getRoutesByToken', (req, res) => {
     data: [{
       menuCode: 'live',
       children: [{
+        menuCode: 'liveIndex',
+        children: null
+      },{
         menuCode: 'liveList',
         children: null
       },{
@@ -39,12 +42,15 @@ app.use('/user/auth/getRoutesByToken', (req, res) => {
         children: null
       }]
     },{
-      menuCode: 'Blog',
+      menuCode: 'blog',
       children: [{
-        menuCode: 'BlogList',
+        menuCode: 'blogIndex',
         children: null
       },{
-        menuCode: 'BlogDetail',
+        menuCode: 'blogList',
+        children: null
+      },{
+        menuCode: 'blogDetail',
         children: null
       }]
     }]
