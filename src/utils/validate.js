@@ -10,7 +10,6 @@ export function validateProtocol(Protocol) {
 }
 
 export function validateEmail(email) {
-  console.log(emailRegx.validate(email))
   return emailRegx.validate(email)
 }
 

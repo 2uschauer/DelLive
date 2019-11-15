@@ -91,7 +91,6 @@ export default {
   methods: {
     getLastRoute() {
       const { routes } = this.$router.options
-      console.log(routes,'routes')
       return routes.length > 2 ? routes[0] : { path: '/' }
     },
     getRoutesByToken(token = '') {

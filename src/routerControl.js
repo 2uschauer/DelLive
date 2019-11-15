@@ -5,8 +5,7 @@ import store from './store'
 store.dispatch('getUserInfo')
 
 const { routes } = store.getters
-const whilteList = ['/login']
-console.log(store.getters.routesStatus)
+const whilteList = ['/login','/blog']
 if (routes && routes.length > 0) {
   router.setRoutes(routes,router)
 }

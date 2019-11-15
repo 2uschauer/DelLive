@@ -11,7 +11,7 @@ export function setRoutes(routes, currentRoutes, routerMap, constantRoutes) {
         if (routesItem.menuCode === routerMapItem.menuCode) {
           const routerMapItemcloned = _.cloneDeep(routerMapItem)
           const routesItemChildren = routesItem.children
-          const routerMapItemChildren = routerMapItem.children
+          const routerMapItemChildren = routerMapItemcloned.children
           if (routerMapItemChildren && routesItemChildren && routerMapItemChildren.length > 0 && routesItemChildren.length > 0) {
             routerMapItemcloned.children = updateRoutes(routesItemChildren, routerMapItemChildren, [])
           }
@@ -25,5 +25,4 @@ export function setRoutes(routes, currentRoutes, routerMap, constantRoutes) {
   currentRoutes.addRoutes(newRoutes)
   constantRoutes.unshift.apply(constantRoutes,newRoutes)
   store.dispatch('setRoutesStatus','set')
-  console.log(store.getters.routesStatus,'routesStatus')
 }

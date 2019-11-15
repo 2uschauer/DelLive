@@ -16,7 +16,6 @@ export const constantRoutes = [{
 }]
 const content = require.context(__dirname, false, /^((?!index).)+\.js/)
 const routerMap = content.keys().map((item) => content(item).default)
-console.log(routerMap,'routerMap')
 class MyRouter extends Router {
   setRoutes(routes, currentRoutes) {
     setRoutes(routes, currentRoutes, routerMap, constantRoutes)
