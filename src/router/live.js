@@ -1,19 +1,25 @@
-import Live from '@/views/live'
+import layout from '@/components/Layout'
 const liveRouteConfig = {
   path: '/live',
   menuCode: 'live',
-  component: Live,
-  redirect: './live/liveList',
+  name: '直播',
+  component: layout,
+  redirect: './live/index',
   children: [{
-    path: '/live/liveList',
-    menuCode: 'liveList',
-    component: () => import('@/views/live/list'),
-    children: null
+    path: '/live/index',
+    menuCode: 'liveIndex',
+    name: '直播首页',
+    component: () => import('@/views/live')
   },{
-    path: '/live/liveDetail',
+    path: '/live/list',
+    menuCode: 'liveList',
+    name: '直播列表',
+    component: () => import('@/views/live/list')
+  },{
+    path: '/live/detail',
     menuCode: 'liveDetail',
-    component: () => import('@/views/live/detail'),
-    children: null
+    name: '直播详情',
+    component: () => import('@/views/live/detail')
   }]
 }
 export default liveRouteConfig
