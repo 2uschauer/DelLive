@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <svg-icon icon-class="logo" class="logo"/>
+    <svg-icon icon-class="logo" class="logo" id="header"/>
     <NavMenu/>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding:30px;
+  padding:50px 0 0 0;
   .logo{
     margin:10px 0;
     height:90px;
