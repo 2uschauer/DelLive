@@ -9,3 +9,4 @@ tests/**/coverage/
 nvm
 logs/
 src/styles/theme
+server/utils/live/live
