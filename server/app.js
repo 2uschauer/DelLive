@@ -28,14 +28,13 @@ function startLive() {
 }
 let subProcess = startLive()
 app.use('/backend', require('./utils/proxy')(config.ziker.appIntranetPrefix))
-
+require('./utils/expressMiddleware')(app)
 if (config.env !== 'env') {
   app.route('/*')
     .get(function(req, res) {
       res.sendFile(path.resolve(app.get('appPath'),'index.html'))
     })
 }
-require('./utils/expressMiddleware')(app)
 
 app.use('/user/auth/token', (req, res) => {
   res.json({

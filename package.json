@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "live appliaction",
   "scripts": {
-    "dev-client": "cross-env NODE_ENV=dev webpack-dev-server --open --mode development --profile --progress --config build/webpack.config.dev.js",
+    "dev-client": "cross-env NODE_ENV=dev webpack-dev-server --open --profile --progress --config build/webpack.config.dev.js",
     "dev-server": "cross-env NODE_ENV=dev nodemon server/app.js",
     "element": "et -c ./src/styles/element-variables.scss -o ./src/styles/theme",
-    "build": "cross-env NODE_ENV=prod webpack --mode production --profile --progress --config build/webpack.config.prd.js"
+    "build": "cross-env NODE_ENV=prod webpack --progress --config build/webpack.config.prd.js"
   },
   "repository": {
     "type": "git",
@@ -71,6 +71,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.5",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
     "element-theme-chalk": "^2.12.0",
