@@ -3,12 +3,14 @@
   <div class= "livePage">
     <div class="liveUrl">
       <el-input class="liveUrlInput" v-model="input" placeholder="请输入直播拉流地址"/>
-      <el-button class="liveUrlButton" type="primary" @click="handleClick">开始直播</el-button>
+      <el-button class="liveUrlButton" type="primary" @click="handleStartLiveClick">开始直播</el-button>
+      <el-button class="liveUrlButton" type="primary" @click="handleReStartLiveClick">重启直播服务</el-button>
     </div>
     <FlvPlayer v-if="url" :url="url" class="flvPlayer"/>
   </div>
 </template>
 <script>
+import Request from './request'
 import FlvPlayer from '@/components/flvPlayer';
 export default {
   name: 'Live',
@@ -22,9 +24,19 @@ export default {
     };
   },
   methods: {
-    handleClick() {
+    handleStartLiveClick() {
       this.url = this.input
     },
+    handleReStartLiveClick() {
+      Request.restartLiveServer()
+        .then((res) => {
+          this.$message.success('重置直播服务成功')
+        })
+        .catch((err) => {
+          if (err.responseMsg) this.$message.error(`重置直播服务失败,${err.responseMsg}`)
+          else console.log(err)
+        })
+    }
   }
 };
 </script>
@@ -40,12 +52,10 @@ export default {
     padding: 0 400px;
   }
   .liveUrlInput{
-    width: calc(80%);
-    display: inline-block;
+    width: calc(60%);
   }
   .liveUrlButton{
     width:calc(18%);
-    display: inline-block;
   }
   .flvPlayer{
     width:100%;
