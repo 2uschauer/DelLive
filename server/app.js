@@ -8,22 +8,26 @@ const logger = require('./utils/log')
 const TagPlatForm = logger.TagPlatForm
 const app = express()
 const spawn = require('child_process').spawn;
-const subProcess = spawn('bash');
+const liveServerPath = path.join(__dirname,'../../livego')
 function onData(data) {
   process.stdout.write(data);
 }
+function startLive() {
+  const subProcess = spawn('bash');
+  subProcess.on('error', function () {
+    TagPlatForm.error('Error error is: ', arguments)
+  });
+  // 设置消息监听
+  subProcess.stdout.on('data', onData);
+  subProcess.stderr.on('data', onData);
+  subProcess.on('close', (code) => { TagPlatForm.info(`Exit process code：${code}`) }); // 监听进程退出
+  // 向子进程发送命令
+  subProcess.stdin.write(`cd ${liveServerPath} \n`);
+  subProcess.stdin.write('./livego \n');
+  return subProcess
+}
+let subProcess = startLive()
 app.use('/backend', require('./utils/proxy')(config.ziker.appIntranetPrefix))
-const liveServerPath = path.join(__dirname,'../../livego')
-subProcess.on('error', function () {
-  TagPlatForm.error('Error error is: ', arguments)
-});
-// 设置消息监听
-subProcess.stdout.on('data', onData);
-subProcess.stderr.on('data', onData);
-subProcess.on('close', (code) => { TagPlatForm.info(`Exit process code：${code}`) }); // 监听进程退出
-// 向子进程发送命令
-subProcess.stdin.write(`cd ${liveServerPath} \n`);
-subProcess.stdin.write('./livego \n');
 
 if (config.env !== 'env') {
   app.route('/*')
@@ -72,7 +76,24 @@ app.use('/user/auth/getRoutesByToken', (req, res) => {
     }]
   })
 })
-
+app.use('/live/restart', function(req, res) {
+  try {
+    process.kill(subProcess.pid + 1, 'SIGKILL')
+    process.kill(subProcess.pid, 'SIGKILL')
+    subProcess = startLive()
+    res.json({
+      responseCode: '000000',
+      responseMsg: '重启成功',
+      data: null
+    })
+  } catch (err) {
+    res.json({
+      responseCode: '000001',
+      responseMsg: `${err}`,
+      data: null
+    })
+  }
+})
 app.use(function(error, req, res, next) {
   TagPlatForm.error('Error error is: ',req.url, error)
   res.json(returnJson.RESULT.SYSTEM_FAIL, 500)
