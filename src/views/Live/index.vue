@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       url: '',
-      input: ''
+      input: 'http://47.103.44.215:7001/live/test.flv'
     };
   },
   methods: {
