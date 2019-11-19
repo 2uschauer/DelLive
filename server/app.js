@@ -13,7 +13,7 @@ function onData(data) {
   process.stdout.write(data);
 }
 app.use('/backend', require('./utils/proxy')(config.ziker.appIntranetPrefix))
-const liveServerPath = path.join(__dirname,'/utils/live')
+const liveServerPath = path.join(__dirname,'../../livego')
 subProcess.on('error', function () {
   TagPlatForm.error('Error error is: ', arguments)
 });
