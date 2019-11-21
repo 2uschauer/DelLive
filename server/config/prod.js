@@ -5,7 +5,7 @@ module.exports = {
   port: 443,
   logsPath: '/Users/delpro/WorkSpace/DelLive/logs',
   ziker: {
-    appIntranetPrefix: 'http://0.0.0.0'
+    appIntranetPrefix: 'http://127.0.0.1:7001'
   },
-  thirdPartAppInteranetPrefix: 'http://127.0.0,1'
+  thirdPartAppInteranetPrefix: 'http://127.0.0.1'
 }

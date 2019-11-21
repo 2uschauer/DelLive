@@ -10,6 +10,7 @@
   </div>
 </template>
 <script>
+import CONSTANT from '@/constant'
 import Request from './request'
 import FlvPlayer from '@/components/flvPlayer';
 export default {
@@ -20,12 +21,12 @@ export default {
   data() {
     return {
       url: '',
-      input: 'http://47.103.44.215:7001/live/test.flv'
+      input: 'test.flv'
     };
   },
   methods: {
     handleStartLiveClick() {
-      this.url = this.input
+      this.url = CONSTANT.env === 'dev' ? `http://127.0.0.1:9500/liveServer/live/${this.input}` : `https://127.0.0.1:443/liveServer/live/${this.input}`
     },
     handleReStartLiveClick() {
       Request.restartLiveServer()

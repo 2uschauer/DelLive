@@ -7,7 +7,7 @@ module.exports = {
   port: 9880,
   logsPath: path.resolve(__dirname, '../../logs'),
   ziker: {
-    appIntranetPrefix: 'http://0.0.0.0'
+    appIntranetPrefix: 'http://127.0.0.1:7001'
   },
   thirdPartAppInteranetPrefix: 'http://127.0.0,1'
 }

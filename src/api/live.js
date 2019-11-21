@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 function restartLiveServer() {
   return request({
-    url: `/live/restart`,
+    url: `/restart/live`,
     method: 'post',
   })
 }

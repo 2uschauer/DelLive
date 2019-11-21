@@ -29,7 +29,7 @@ function startLive() {
   return subProcess
 }
 let subProcess = startLive()
-app.use('/backend', require('./utils/proxy')(config.ziker.appIntranetPrefix))
+app.use('/liveServer', require('./utils/proxy')(config.ziker.appIntranetPrefix))
 require('./utils/expressMiddleware')(app)
 if (config.env !== 'dev') {
   app.route('/*')
@@ -77,7 +77,7 @@ app.use('/user/auth/getRoutesByToken', (req, res) => {
     }]
   })
 })
-app.use('/live/restart', function(req, res) {
+app.use('/restart/live', function(req, res) {
   try {
     process.kill(subProcess.pid + 1, 'SIGKILL')
     process.kill(subProcess.pid, 'SIGKILL')
@@ -100,11 +100,10 @@ app.use(function(error, req, res, next) {
   res.json(returnJson.RESULT.SYSTEM_FAIL, 500)
   next()
 })
-const options = {
+const server = config.env === 'dev' ? http.createServer(app) : https.createServer({
   key: fs.readFileSync('/etc/letsencrypt/live/www.euphausiacea.cn/privkey.pem'),
   cert: fs.readFileSync('/etc/letsencrypt/live/www.euphausiacea.cn/cert.pem')
-};
-const server = config.env === 'dev' ? http.createServer(app) : https.createServer(options,app)
+},app)
 function startServer() {
   server.listen(config.port, function() {
     console.info(`Express server listening on ${config.port}`,`environment is ${process.env.NODE_ENV}`)
