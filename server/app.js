@@ -1,6 +1,8 @@
 'use strict'
 const express = require('express')
 const http = require('http')
+const https = require('https')
+const fs = require('fs')
 const config = require('./config')
 const path = require('path')
 const returnJson = require('./utils/returnJson')
@@ -29,7 +31,7 @@ function startLive() {
 let subProcess = startLive()
 app.use('/backend', require('./utils/proxy')(config.ziker.appIntranetPrefix))
 require('./utils/expressMiddleware')(app)
-if (config.env !== 'env') {
+if (config.env !== 'dev') {
   app.route('/*')
     .get(function(req, res) {
       res.sendFile(path.resolve(app.get('appPath'),'index.html'))
@@ -98,7 +100,11 @@ app.use(function(error, req, res, next) {
   res.json(returnJson.RESULT.SYSTEM_FAIL, 500)
   next()
 })
-const server = http.createServer(app)
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/www.euphausiacea.cn/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/www.euphausiacea.cn/cert.pem')
+};
+const server = config.env === 'dev' ? http.createServer(app) : https.createServer(options,app)
 function startServer() {
   server.listen(config.port, function() {
     console.info(`Express server listening on ${config.port}`,`environment is ${process.env.NODE_ENV}`)
