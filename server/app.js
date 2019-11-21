@@ -101,8 +101,8 @@ app.use(function(error, req, res, next) {
   next()
 })
 const server = config.env === 'dev' ? http.createServer(app) : https.createServer({
-  key: fs.readFileSync('/etc/letsencrypt/live/www.euphausiacea.cn/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/www.euphausiacea.cn/cert.pem')
+  key: fs.readFileSync(`${config.ceFilePath}/privkey.pem`),
+  cert: fs.readFileSync(`${config.ceFilePath}/cert.pem`)
 },app)
 function startServer() {
   server.listen(config.port, function() {
