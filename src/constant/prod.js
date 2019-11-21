@@ -1,7 +1,7 @@
 const prodConfig = {
   BASE_URL: '/',
   BACKEND_URL: '/backend',
-  IP: 'https://64.64.238.145'
+  IP: 'https://www.die.live'
 }
 
 export default prodConfig

@@ -2,8 +2,8 @@
   <div class="footer" id="footer">
     <svg-icon icon-class="logo" class="logo"/>
     <div class="content">
-      <div class="item">沪ICP备19013115</div>
       <div class="item">Powered by <a href="mailto:ghoulsteven@gmail.com">Euphausiacea</a></div>
+      <div>All Right Rserved</div>
     </div>
   </div>
 </template>
