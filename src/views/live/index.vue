@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     handleStartLiveClick() {
-      this.url = CONSTANT.env === 'dev' ? `http://127.0.0.1:9500/liveServer/live/${this.input}` : `https://127.0.0.1:443/liveServer/live/${this.input}`
+      this.url = CONSTANT.env === 'dev' ? `http://127.0.0.1:9500/liveServer/live/${this.input}` : `https://www.euphausiacea.cn/liveServer/live/${this.input}`
     },
     handleReStartLiveClick() {
       Request.restartLiveServer()
