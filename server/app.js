@@ -63,7 +63,7 @@ function startServer() {
   })
 }
 setImmediate(startServer)
-if (config.dev === 'prod') {
+if (config.env !== 'dev') {
   const httpServer = http.createServer(app)
   // eslint-disable-next-line no-inner-declarations
   function startHttpServer() {
