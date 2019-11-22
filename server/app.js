@@ -12,12 +12,6 @@ const app = express()
 const { startLive } = require('./utils')
 let subProcess = startLive()
 
-app.all('*', (req, res, next) => {
-  if (config.env === 'pord' && req.protocol === 'http') {
-    res.redirect(301, `https://www.die.live`);
-  }
-  else next()
-});
 app.use('/user', require('./routes/user')())
 
 app.use('/restart/live', function(req, res) {
@@ -44,6 +38,11 @@ require('./utils/expressMiddleware')(app)
 
 if (config.env !== 'dev') {
   app.route('/*')
+    .all(function(req, res, next) {
+      if (req.protocol === 'http') {
+        res.redirect(301, `https://www.die.live`);
+      } else next()
+    })
     .get(function(req, res) {
       res.sendFile(path.resolve(app.get('appPath'),'index.html'))
     })
