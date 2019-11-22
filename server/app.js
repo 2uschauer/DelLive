@@ -13,12 +13,13 @@ const { startLive } = require('./utils')
 let subProcess = startLive()
 
 app.all('*', (req, res, next) => {
-  if (req.req.protocol === 'http' && config.env === 'pord') {
+  if (config.env === 'pord' && req.protocol === 'http') {
     res.redirect(301, `https://www.die.live`);
   }
+  else next()
 });
-
 app.use('/user', require('./routes/user')())
+
 app.use('/restart/live', function(req, res) {
   try {
     process.kill(subProcess.pid + 1, 'SIGKILL')
