@@ -12,7 +12,7 @@ module.exports = function(target) {
     res.status(520).end()
   })
   router.use(function(req, res) {
-    TagPlatForm.info(`Proxy [${target}] [${target}] [${req.url}] proxy processing!`)
+    TagPlatForm.info(`Proxy [${target}] [${req.url}] proxy processing!`)
     zikerProxy.web(req, res)
   })
   return router
