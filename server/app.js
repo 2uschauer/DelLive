@@ -67,8 +67,8 @@ if (config.dev === 'prod') {
   const httpServer = http.createServer(app)
   // eslint-disable-next-line no-inner-declarations
   function startHttpServer() {
-    httpServer.listen(80, function() {
-      console.info(`Express server listening on 80`,`environment is ${process.env.NODE_ENV}`)
+    httpServer.listen(config.httpPort, function() {
+      console.info(`Express server listening on ${config.httpPort}`,`environment is ${process.env.NODE_ENV}`)
     })
   }
   setImmediate(startHttpServer)
