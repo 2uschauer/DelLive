@@ -24,6 +24,9 @@
           <el-form-item label="PASSWORD" prop="password">
             <el-input v-model="signForm.password" placeholder="Enter Your Password" show-password></el-input>
           </el-form-item>
+          <el-form-item label="Invite Code" v-if="signStatus==='up'" prop="inviteCode">
+            <el-input v-model="signForm.inviteCode" placeholder="Enter Your Invite Code"></el-input>
+          </el-form-item>
         </el-form>
         <el-button type="primary" round class="signInButton" @click="handleSignClick" :loading="loading">{{signStatus === 'in' ? 'Sign In' : 'Sign Up'}}</el-button>
       </div>
@@ -48,6 +51,10 @@ export default {
       else if (!validateEmail(value)) callback(new Error('您所输入的邮箱不合法'))
       else callback()
     }
+    const inviteCodeValidator = (rule, value, callback) => {
+      if (value.length <= 0) callback(new Error('注册时邀请码不可为空'))
+      else callback()
+    }
     return {
       carouselGroup: [{
         className: 'carousel_share',
@@ -66,6 +73,7 @@ export default {
         userName: '',
         password: '',
         email: '',
+        inviteCode: '',
       },
       signRules: {
         userName: [{
@@ -82,6 +90,11 @@ export default {
           required: () => this.signStatus === 'up',
           trigger: 'blur',
           validator: emailValidator
+        }],
+        inviteCode: [{
+          required: () => this.signStatus === 'up',
+          trigger: 'blur',
+          validator: inviteCodeValidator
         }]
       },
       signStatus: 'in',
@@ -106,9 +119,10 @@ export default {
     handleSignClick() {
       this.$refs.signFrom.validate(valid => {
         if (valid) {
+          const { signForm } = this
           this.loading = true
-          this.$store.dispatch('signIn', this.signForm)
-            .then((res) => {
+          if (this.signStatus === 'in') {
+            this.$store.dispatch('signIn', signForm).then((res) => {
               this.$message.success(`${res.responseMsg}`)
               this.getRoutesByToken(res.data)
             }).catch((err) => {
@@ -116,6 +130,16 @@ export default {
             }).finally(() => {
               this.loading = false
             })
+          } else {
+            this.$store.dispatch('signUp', signForm).then((res) => {
+              this.$message.success(`${res.responseMsg}`)
+              this.getRoutesByToken(res.data)
+            }).catch((err) => {
+              this.$message.error(`${err.responseMsg}`)
+            }).finally(() => {
+              this.loading = false
+            })
+          }
         } else {
           this.$message.warning(`格式不正确，请重新${this.signStatus === 'in' ? '登录' : '注册'}！`)
         }

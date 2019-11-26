@@ -48,7 +48,8 @@ const app = {
       const params = {
         userName: userInfo.userName.trim(),
         password: userInfo.password.trim(),
-        email: userInfo.email.trim()
+        email: userInfo.email.trim(),
+        inviteCode: userInfo.inviteCode.trim()
       }
       return new Promise((resolve,reject) => {
         userAPI.signUp(params)
@@ -67,7 +68,7 @@ const app = {
       commit('SET_TOKEN', userInfo.token)
     },
     getRoutesByToken({ commit, state }, rawToken) {
-      const token = `Bearer ${rawToken}`
+      const token = `${rawToken}`
       commit('SET_TOKEN', token)
       return new Promise((resolve, reject) => {
         userAPI.getRoutesByToken()
