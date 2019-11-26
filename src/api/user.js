@@ -1,22 +1,18 @@
-import CONSTANT from '@/constant'
 import request from '@/utils/request'
-import qs from 'query-string'
 
-function signIn(params) {
+function signIn(data) {
   return request({
     url: `/user/auth/token`,
     method: 'post',
-    data: qs.stringify(params),
-    headers: CONSTANT.FORM_HEADERS,
+    data
   })
 }
 
-function signUp(params) {
+function signUp(data) {
   return request({
     url: `/user/signUp`,
     method: 'post',
-    data: qs.stringify(params),
-    headers: CONSTANT.FORM_HEADERS,
+    data
   })
 }
 
