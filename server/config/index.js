@@ -14,7 +14,14 @@ function requiredProcessEnv(name) {
 
 const all = {
   env: process.env.NODE_ENV,
-  root: root
+  root: root,
+  mongo: {
+    port: 9881,
+    url: '127.0.0.1',
+    db: 'live',
+    userName: 'live',
+    password: 'v7f5WQHqkw',
+  }
 }
 
 const envFile = './' + requiredProcessEnv('NODE_ENV').trim() + '.js'
