@@ -16,13 +16,10 @@ export default {
     }
   },
   mounted() {
-    this.handleScroll()
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.throttle(this.handleScroll,500,1000))
+    this.handleFooterSize()
   },
   methods: {
-    handleScroll() {
+    handleFooterSize() {
       const footer = document.getElementById('footer')
       if (document.documentElement.scrollTop > 282) {
         if (!footer.classList.contains('noFlex')) {
