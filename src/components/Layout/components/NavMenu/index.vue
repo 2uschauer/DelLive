@@ -35,7 +35,13 @@ export default {
   },
   created() {
     const { routes } = _.cloneDeep(this.$router.options)
-    this.router = routes.filter((item) => !item.hidden)
+    const router = routes.filter((item) => !item.hidden)
+    router.push({
+      name: '登出',
+      path: '/logout',
+      children: []
+    })
+    this.router = router
     this.currentRoutePath = this.$route.path
   },
   methods: {
@@ -51,7 +57,13 @@ export default {
       }
     },
     handleSubMenuClick(item) {
-      this.$router.push({ path: `${item.path}` })
+      if (item.name === '登出') {
+        this.$store.dispatch('logout')
+          .then(() => {
+            this.$router.push({ path: '/login' })
+            window.location.reload()
+          })
+      } else this.$router.push({ path: `${item.path}` })
     }
   }
 }
