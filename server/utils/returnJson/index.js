@@ -8,6 +8,7 @@ const RESULT = {
   SIGN_IN_FAIL: { responseCode: '930101', responseMsg: '用户登录失败' },
   SIGN_IN_USERNAME_OR_PASSWORD_FAIL: { responseCode: '930102', responseMsg: '用户名或密码错误' },
   SIGN_IN_VERIFY_CODE_EXPIRE: { responseCode: '930103', responseMsg: '验证码已过期' },
+  SIGN_IN_INVATE_CODE_EXPIRE: { responseCode: '930104', responseMsg: '邀请码已过期' },
   SIGN_IN_LOCKED: { responseCode: '930107', responseMsg: '用户账号已锁定，请联系管理员解锁' },
   SIGNATURE_NOT_VAILD: { responseCode: '930201', responseMsg: '签名验证不通过' },
   REQUEST_NOT_VALID: { responseCode: '930202', responseMsg: '请求不符合规范，请确认后再提交' },
@@ -37,5 +38,3 @@ exports.ReturnJson = ReturnJson
 exports.fail = fail
 exports.success = success
 exports.NodeError = NodeError
-
-// db.createUser({ user: 'live', pwd: 'v7f5WQHqkw', roles: [ { role: "readWrite", db: "live" } ] });
