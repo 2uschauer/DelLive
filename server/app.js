@@ -11,7 +11,8 @@ const TagPlatForm = logger.TagPlatForm
 const app = express()
 const { startLive } = require('./utils')
 let subProcess = startLive()
-
+require('./utils/expressMiddleware')(app)
+app.use('/liveServer', require('./utils/proxy')(config.ziker.appIntranetPrefix))
 app.use('/user', require('./routes/user')())
 
 app.use('/restart/live', function(req, res) {
@@ -32,10 +33,6 @@ app.use('/restart/live', function(req, res) {
     })
   }
 })
-
-app.use('/liveServer', require('./utils/proxy')(config.ziker.appIntranetPrefix))
-require('./utils/expressMiddleware')(app)
-
 if (config.env !== 'dev') {
   app.route('/*')
     .all(function(req, res, next) {
