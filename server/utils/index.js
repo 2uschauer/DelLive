@@ -2,7 +2,9 @@ const logger = require('.//log')
 const TagPlatForm = logger.TagPlatForm
 const spawn = require('child_process').spawn;
 const path = require('path')
+const jwt = require('jwt-simple');
 const liveServerPath = path.join(__dirname,'../../../livego')
+const secret = 'userPassword'
 function onData(data) {
   process.stdout.write(data);
 }
@@ -19,4 +21,8 @@ module.exports.startLive = function() {
   subProcess.stdin.write(`cd ${liveServerPath} \n`);
   subProcess.stdin.write('./livego \n');
   return subProcess
+}
+
+module.exports.encodePasseord = function(password) {
+  return jwt.encode(password, secret , 'HS512')
 }
