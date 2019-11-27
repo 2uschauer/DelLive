@@ -1,5 +1,4 @@
-const logger = require('.//log')
-const TagPlatForm = logger.TagPlatForm
+const { TagPlatForm } = require('./log')
 const spawn = require('child_process').spawn;
 const path = require('path')
 const jwt = require('jwt-simple');
@@ -11,7 +10,7 @@ function onData(data) {
 module.exports.startLive = function() {
   const subProcess = spawn('bash');
   subProcess.on('error', function () {
-    TagPlatForm.error('Error error is: ', arguments)
+    TagPlatForm.error('[Error] Start Live Service Error, ', arguments)
   });
   // 设置消息监听
   subProcess.stdout.on('data', onData);

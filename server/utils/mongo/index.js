@@ -1,13 +1,13 @@
 'use strict'
-const TagPlatForm = require('../log').TagPlatForm
+const { TagPlatForm } = require('../log')
 const mongoose = require('mongoose');
 const { mongo } = require('../../config')
 const url = `mongodb://${mongo.userName}:${mongo.password}@${mongo.url}:${mongo.port}/${mongo.db}`
 mongoose.connect(url, { useNewUrlParser: true })
 const db = mongoose.connection;
-db.on('error', function(err) { TagPlatForm.error(`${err}`) });
-db.on('connected', function() { TagPlatForm.info(`mongodb conected at ${url}!`) });
-db.on('disconnected', function() { TagPlatForm.info(`mongodb conected at ${url}!`) });
+db.on('error', function(err) { TagPlatForm.error(`[Error] Opening MongoDB Error: ${err}`) });
+db.on('connected', function() { TagPlatForm.info(`[Info] MongoDB Conected at ${url}!`) });
+db.on('disconnected', function() { TagPlatForm.info(`[Info] MongoDB Disconnected at ${url}!`) });
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   userName: { type: String },

@@ -6,8 +6,7 @@ const fs = require('fs')
 const config = require('./config')
 const path = require('path')
 const returnJson = require('./utils/returnJson')
-const logger = require('./utils/log')
-const TagPlatForm = logger.TagPlatForm
+const { TagPlatForm } = require('./utils/log')
 const app = express()
 const { startLive } = require('./utils')
 let subProcess = startLive()
@@ -46,7 +45,7 @@ if (config.env !== 'dev') {
 }
 
 app.use(function(error, req, res, next) {
-  TagPlatForm.error('Error error is: ',req.url, error)
+  TagPlatForm.error(`[Error]Request ${req.url} Error: ${error}`)
   res.json(returnJson.RESULT.SYSTEM_FAIL, 500)
   next()
 })

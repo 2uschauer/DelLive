@@ -2,7 +2,7 @@
 module.exports = function(target) {
   const express = require('express')
   const httpProxy = require('http-proxy')
-  const TagPlatForm = require('../log').TagPlatForm
+  const { TagPlatForm } = require('../log')
   const router = express.Router()
   const zikerProxy = httpProxy.createProxyServer({
     target,

@@ -8,7 +8,7 @@ const { RESULT } = require('../utils/returnJson')
 const { User, Role, InviteCode } = require('../utils/mongo')
 const { encodePasseord } = require('../utils')
 const redisClient = redis.createClient(9882, '127.0.0.1')
-redisClient.on('error', (err) => { TagPlatForm.error(`${err}`) });
+redisClient.on('error', (err) => { TagPlatForm.error(`[Error]Opening Redis Error: ${err}`) });
 const redisGet = promisify(redisClient.get).bind(redisClient);
 const redisSet = promisify(redisClient.set).bind(redisClient);
 const secret = 'DieLive';
@@ -16,6 +16,7 @@ module.exports = function() {
   const express = require('express')
   const router = express.Router()
   router.use('/auth/token',function(req, res) {
+    TagPlatForm.info(`[Info] Request [${req.url}] processing!`)
     const params = req.body
     let token = null
     params.password = encodePasseord(params.password)
@@ -33,10 +34,16 @@ module.exports = function() {
         data: token
       })
     }).catch((err) => {
-      console.error(err)
+      if (err) TagPlatForm.error(`[Error] Request [${req.url}] Error: ${err}`)
+      res.json({
+        responseCode: '000001',
+        responseMsg: err,
+        data: err || null
+      })
     })
   })
   router.use('/signUp', (req, res) => {
+    TagPlatForm.info(`[Info] Request [${req.url}] processing!`)
     const params = req.body
     params.password = encodePasseord(params.password)
     let token = null
@@ -57,7 +64,6 @@ module.exports = function() {
         res.json(RESULT.SIGN_IN_INVATE_CODE_EXPIRE)
       }
     }).then((doc) => {
-      console.log(doc.router,'router')
       return User.bulkWrite([{
         insertOne: {
           document: {
@@ -72,40 +78,49 @@ module.exports = function() {
         return redisSet(token, params.userName)
       }).then(() => {
         return InviteCode.deleteOne(inviteCode)
-      }).then((doc) => {
+      }).then(() => {
         res.json({
           responseCode: '000000',
           responseMsg: '登陆成功',
           data: token
         })
       }).catch((err) => {
+        if (err) TagPlatForm.error(`[Error] Request [${req.url}] Error: ${err}`)
         res.json({
           responseCode: '000001',
           responseMsg: err,
-          data: err
+          data: err || null
         })
       })
     })
   })
   router.use('/auth/getRoutesByToken', (req, res) => {
+    TagPlatForm.info(`[Info] Request [${req.url}] processing!`)
     const token = req.get('X-Authorization')
-    redisGet(token)
-      .then((userName) => {
-        if (userName) {
-          User.findOne({ userName: userName })
-            .then((doc) => {
-              if (doc) {
-                res.json({
-                  responseCode: '000000',
-                  responseMsg: '获取菜单列表成功',
-                  data: doc.router
-                })
-              } else {
-                res.json(RESULT.UNAUTHORIZATION)
-              }
-            })
-        }
+    redisGet(token).then((userName) => {
+      if (userName) {
+        return User.findOne({ userName: userName })
+      } else {
+        res.json(RESULT.UNAUTHORIZATION)
+      }
+    }).then((doc) => {
+      if (doc) {
+        res.json({
+          responseCode: '000000',
+          responseMsg: '获取菜单列表成功',
+          data: doc.router
+        })
+      } else {
+        res.json(RESULT.UNAUTHORIZATION)
+      }
+    }).catch((err) => {
+      if (err) TagPlatForm.error(`[Error] Request [${req.url}] Error: ${err}`)
+      res.json({
+        responseCode: '000001',
+        responseMsg: err,
+        data: err || null
       })
+    })
   })
   return router
 }
