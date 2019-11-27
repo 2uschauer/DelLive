@@ -9,6 +9,8 @@ const RESULT = {
   SIGN_IN_USERNAME_OR_PASSWORD_FAIL: { responseCode: '930102', responseMsg: '用户名或密码错误' },
   SIGN_IN_VERIFY_CODE_EXPIRE: { responseCode: '930103', responseMsg: '验证码已过期' },
   SIGN_IN_INVATE_CODE_EXPIRE: { responseCode: '930104', responseMsg: '邀请码已过期' },
+  SIGN_UP_USER_EXISTED: { responseCode: '930105', responseMsg: '注册用户名已存在' },
+  SIGN_UP_EMIAL_EXISTED: { responseCode: '930106', responseMsg: '注册邮箱已存在' },
   SIGN_IN_LOCKED: { responseCode: '930107', responseMsg: '用户账号已锁定，请联系管理员解锁' },
   SIGNATURE_NOT_VAILD: { responseCode: '930201', responseMsg: '签名验证不通过' },
   REQUEST_NOT_VALID: { responseCode: '930202', responseMsg: '请求不符合规范，请确认后再提交' },

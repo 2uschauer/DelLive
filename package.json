@@ -42,7 +42,7 @@
     "lodash-es": "^4.17.15",
     "method-override": "^3.0.0",
     "moment": "^2.24.0",
-    "mongodb": "^3.3.4",
+    "mongoose": "^5.7.12",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.4",
     "normalize.css": "^8.0.1",
