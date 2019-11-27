@@ -1,28 +1,28 @@
 'use strict'
 
-// const config = require('../../config')
+const config = require('../../config')
 const winston = require('winston')
-const expressWinston = require('express-winston')
+// const expressWinston = require('express-winston')
 const moment = require('moment')
 require('winston-daily-rotate-file')
 const dateFormat = `${moment().format('YYYY-MM-DD HH:mm:ss:SSS')}`
 const TagPlatForm = winston.createLogger({
   transports: [
-    // new (winston.transports.DailyRotateFile)({
-    //   filename: config.logsPath + '/TagPlatform.log',
-    //   level: 'debug',
-    //   json: false,
-    //   colorize: true,
-    //   timestamp: dateFormat,
-    //   datePattern: '_yyyy-MM-dd',
-    // }),
+    new (winston.transports.DailyRotateFile)({
+      filename: config.logsPath + '/TagPlatform.log',
+      level: 'debug',
+      json: false,
+      colorize: true,
+      timestamp: dateFormat,
+      // datePattern: '_yyyy-MM-dd',
+    }),
     new (winston.transports.Console)({
       level: 'debug',
       timestamp: dateFormat,
     })
   ]
 })
-
+/*
 expressWinston.requestWhitelist.push('body')
 expressWinston.responseWhitelist.push('body')
 
@@ -33,13 +33,13 @@ const expressWinstonLogger = expressWinston.logger({
       colorize: true,
       timestamp: dateFormat,
     }),
-    // new (winston.transports.DailyRotateFile)({
-    //   filename: config.logsPath + '/logs/TagPlatform.log',
-    //   level: 'debug',
-    //   json: false,
-    //   colorize: true,
-    //   timestamp: dateFormat,
-    // })
+    new (winston.transports.DailyRotateFile)({
+      filename: config.logsPath + '/TagPlatform.log',
+      level: 'debug',
+      json: false,
+      colorize: true,
+      timestamp: dateFormat,
+    })
   ],
   meta: true,
   level: 'info',
@@ -61,17 +61,18 @@ const expressWinstonErrorLogger = expressWinston.errorLogger({
       colorize: true,
       timestamp: dateFormat,
     }),
-    // new (winston.transports.File)({
-    //   filename: config.logsPath + '/logs/TagPlatform.log',
-    //   level: 'debug',
-    //   json: false,
-    //   colorize: true,
-    //   timestamp: dateFormat,
-    //   datePattern: '_yyyy-MM-dd',
-    // })
+    new (winston.transports.File)({
+      filename: config.logsPath + '/TagPlatform.log',
+      level: 'debug',
+      json: false,
+      colorize: true,
+      timestamp: dateFormat,
+      // datePattern: '_yyyy-MM-dd',
+    })
   ]
 })
-
-exports.TagPlatForm = TagPlatForm
 exports.expressWinstonLogger = expressWinstonLogger
 exports.expressWinstonErrorLogger = expressWinstonErrorLogger
+*/
+exports.TagPlatForm = TagPlatForm
+

@@ -7,6 +7,6 @@ yarn-error.log*
 package-lock.json
 tests/**/coverage/
 nvm
-logs/
+logs/*
 src/styles/theme
 server/utils/live/live
