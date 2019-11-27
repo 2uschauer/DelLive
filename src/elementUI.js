@@ -26,5 +26,4 @@ Vue.use(Collapse)
 Vue.use(FormItem)
 Vue.use(CollapseItem)
 Vue.use(Icon)
-Vue.use(Message)
 Vue.prototype.$message = Message;
