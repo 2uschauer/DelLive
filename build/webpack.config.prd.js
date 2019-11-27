@@ -75,6 +75,7 @@ const webpackConfig = merge(baseWebpackConfig,{
     }]
   },
   plugins: [
+    new webpack.HashedModuleIdsPlugin(),
     new webpack.DefinePlugin({
       'process.env':EnvConfig
     }),

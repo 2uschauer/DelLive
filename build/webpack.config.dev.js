@@ -5,6 +5,7 @@ const path=require('path');
 const webpack=require('webpack');
 const MiniCssExtractPlugin=require('mini-css-extract-plugin');
 const HtmlWebpackPlugin=require('html-webpack-plugin'); // 自动生成index.html
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -106,6 +107,7 @@ const webpackConfig = merge(baseWebpackConfig,{
   },
   devtool: 'source-map',
   plugins: [
+    new BundleAnalyzerPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

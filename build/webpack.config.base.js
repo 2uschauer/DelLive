@@ -103,21 +103,64 @@ module.exports = {
     }),
   ],
   optimization: {
+    namedChunks:true,
     splitChunks: {
+      chunks: 'all',
+      minSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 100,
+      maxInitialRequests: 100,
+      automaticNameDelimiter: '-',
+      name: true,
       cacheGroups:{ // 这里开始设置缓存的 chunks
-        vendor: { // key 为entry中定义的 入口名称
-          chunks: 'initial', // 必须三选一： "initial" | "all" | "async"(默认就是异步)
-          test: /node_modules/, // 正则规则验证，如果符合就提取 chunk (指定是node_modules下的第三方包)
-          name: 'vendor', // 要缓存的 分隔出来的 chunk 名称
+        dll: {
+          name:'dll',
           minChunks: 1,
-          enforce: true
+          test: /\/node_modules\/(vue|vue-router|vuex|babel-polyfill|normalize.css|element-ui|lodash|nprogress|axios|lodash-es|sockjs-client|core-js)\//,
+          priority: 100, // 权重
+          maxSize: 500000,
+        },
+        'async-commons': {  // 异步加载公共包、组件等
+          chunks: 'async',
+          minChunks: 2,
+          name: 'async-commons',
+          priority: 90,
+        },
+        commons: {
+          chunks: 'all',
+          name: 'commons',
+          minChunks: 2,
+          priority: 80, // 权重
+        },
+        vendors: {
+          minChunks: 1,
+          test: /[\\/]node_modules[\\/]/,
+          priority: 70, // 权重
+          minSize: 0,
+          // maxSize: 100000,
+          name:'vendors'
         },
         styles: {
           chunks: 'all',
-          test: /\.(css|styl)$/,
-          name: 'vendor',
+          test: /\.(css|styl(us)?|sass|scss)$/,
+          name: 'styles',
           minChunks: 1,
+          // maxSize: 100000,
           enforce: true
+        },
+        'async-main': {
+          chunks: 'async', //initial表示提取入口文件的公共部分
+          minChunks: 1, //表示提取公共部分最少的文件数
+          minSize: 0, //表示提取公共部分最小的大小
+          name: 'async-main'
+        },
+        main: {
+          priority: -25, // 权重
+          chunks: 'all', //initial表示提取入口文件的公共部分
+          minChunks: 1, //表示提取公共部分最少的文件数
+          minSize: 0, //表示提取公共部分最小的大小
+          // maxSize: 100000,
+          name: 'main'
         }
       }
     }
