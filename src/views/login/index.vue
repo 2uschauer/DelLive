@@ -126,7 +126,8 @@ export default {
               this.$message.success(`${res.responseMsg}`)
               this.getRoutesByToken(res.data)
             }).catch((err) => {
-              this.$message.error(`${err.responseMsg}`)
+              if (err) this.$message.error(`${err.responseMsg}`)
+              else console.error(err)
             }).finally(() => {
               this.loading = false
             })

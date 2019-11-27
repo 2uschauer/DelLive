@@ -12,7 +12,8 @@ import {
   FormItem,
   Collapse,
   CollapseItem,
-  Icon
+  Icon,
+  Message
 } from 'element-ui';
 locale.use(lang)
 Vue.use(Button)
@@ -25,3 +26,5 @@ Vue.use(Collapse)
 Vue.use(FormItem)
 Vue.use(CollapseItem)
 Vue.use(Icon)
+Vue.use(Message)
+Vue.prototype.$message = Message;
