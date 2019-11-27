@@ -16,7 +16,7 @@ module.exports = function() {
   const express = require('express')
   const router = express.Router()
   router.use('/auth/token',function(req, res) {
-    TagPlatForm.info(`[Info] Request [${req.url}] processing!`)
+    TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
     const params = req.body
     let token = null
     params.password = encodePasseord(params.password)
@@ -34,7 +34,7 @@ module.exports = function() {
         data: token
       })
     }).catch((err) => {
-      if (err) TagPlatForm.error(`[Error] Request [${req.url}] Error: ${err}`)
+      if (err) TagPlatForm.error(`[Error] Request [${req.originalUrl}] Error: ${err}`)
       res.json({
         responseCode: '000001',
         responseMsg: err,
@@ -43,7 +43,7 @@ module.exports = function() {
     })
   })
   router.use('/signUp', (req, res) => {
-    TagPlatForm.info(`[Info] Request [${req.url}] processing!`)
+    TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
     const params = req.body
     params.password = encodePasseord(params.password)
     let token = null
@@ -85,7 +85,7 @@ module.exports = function() {
           data: token
         })
       }).catch((err) => {
-        if (err) TagPlatForm.error(`[Error] Request [${req.url}] Error: ${err}`)
+        if (err) TagPlatForm.error(`[Error] Request [${req.originalUrl}] Error: ${err}`)
         res.json({
           responseCode: '000001',
           responseMsg: err,
@@ -95,7 +95,7 @@ module.exports = function() {
     })
   })
   router.use('/auth/getRoutesByToken', (req, res) => {
-    TagPlatForm.info(`[Info] Request [${req.url}] processing!`)
+    TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
     const token = req.get('X-Authorization')
     redisGet(token).then((userName) => {
       if (userName) {
@@ -114,7 +114,7 @@ module.exports = function() {
         res.json(RESULT.UNAUTHORIZATION)
       }
     }).catch((err) => {
-      if (err) TagPlatForm.error(`[Error] Request [${req.url}] Error: ${err}`)
+      if (err) TagPlatForm.error(`[Error] Request [${req.originalUrl}] Error: ${err}`)
       res.json({
         responseCode: '000001',
         responseMsg: err,

@@ -45,7 +45,7 @@ if (config.env !== 'dev') {
 }
 
 app.use(function(error, req, res, next) {
-  TagPlatForm.error(`[Error]Request ${req.url} Error: ${error}`)
+  TagPlatForm.error(`[Error]Request ${req.originalUrl} Error: ${error}`)
   res.json(returnJson.RESULT.SYSTEM_FAIL, 500)
   next()
 })

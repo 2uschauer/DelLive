@@ -8,11 +8,11 @@ module.exports = function(target) {
     target,
   })
   zikerProxy.on('error', function(err,req,res) {
-    TagPlatForm.error(`Proxy [${req.url}] Proxy error! error is `, req.url, err)
+    TagPlatForm.error(`Proxy [${req.originalUrl}] Proxy error! error is `, req.originalUrl, err)
     res.status(520).end()
   })
   router.use(function(req, res) {
-    TagPlatForm.info(`Proxy [${target}] [${req.url}] proxy processing!`)
+    TagPlatForm.info(`Proxy [${target}] [${req.originalUrl}] proxy processing!`)
     zikerProxy.web(req, res)
   })
   return router
