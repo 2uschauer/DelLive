@@ -63,7 +63,10 @@ export default {
             this.$router.push({ path: '/login' })
             window.location.reload()
           })
-      } else this.$router.push({ path: `${item.path}` })
+      } else {
+        this.$router.push({ path: `${item.path}` })
+        this.currentRoutePath = item.path
+      }
     }
   }
 }
