@@ -33,7 +33,7 @@ export default {
     width: {
       type: String,
       require: false,
-      default: '1080'
+      default: '100%'
     }
   },
   data() {

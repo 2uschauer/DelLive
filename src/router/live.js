@@ -10,16 +10,6 @@ const liveRouteConfig = {
     menuCode: 'liveIndex',
     name: '直播首页',
     component: () => import('@/views/live')
-  },{
-    path: '/live/list',
-    menuCode: 'liveList',
-    name: '直播列表',
-    component: () => import('@/views/live/list')
-  },{
-    path: '/live/detail',
-    menuCode: 'liveDetail',
-    name: '直播详情',
-    component: () => import('@/views/live/detail')
   }]
 }
 export default liveRouteConfig
