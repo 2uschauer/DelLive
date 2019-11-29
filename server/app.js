@@ -12,8 +12,6 @@ const { LiveHouse } = require('./utils/mongo')
 // const { startLive } = require('./utils')
 // let subProcess = startLive()
 require('./utils/expressMiddleware')(app)
-app.use(require('./router')())
-
 if (config.env !== 'dev') {
   app.route('/*')
     .all(function(req, res, next) {
@@ -25,7 +23,7 @@ if (config.env !== 'dev') {
       res.sendFile(path.resolve(app.get('appPath'),'index.html'))
     })
 }
-
+app.use(require('./router')())
 app.use(function(error, req, res, next) {
   TagPlatForm.error(`[Error]Request ${req.originalUrl} Error: ${error}`)
   res.json(returnJson.RESULT.SYSTEM_FAIL, 500)
