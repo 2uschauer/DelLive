@@ -21,6 +21,9 @@ const all = {
     db: 'live',
     userName: 'live',
     password: 'v7f5WQHqkw',
+  },
+  live: {
+    secret: 'DieLive'
   }
 }
 

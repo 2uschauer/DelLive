@@ -8,30 +8,12 @@ const path = require('path')
 const returnJson = require('./utils/returnJson')
 const { TagPlatForm } = require('./utils/log')
 const app = express()
-const { startLive } = require('./utils')
-let subProcess = startLive()
+const { LiveHouse } = require('./utils/mongo')
+// const { startLive } = require('./utils')
+// let subProcess = startLive()
 require('./utils/expressMiddleware')(app)
-app.use('/liveServer', require('./utils/proxy')(config.ziker.appIntranetPrefix))
-app.use('/user', require('./routes/user')())
+app.use(require('./router')())
 
-app.use('/restart/live', function(req, res) {
-  try {
-    process.kill(subProcess.pid + 1, 'SIGKILL')
-    process.kill(subProcess.pid, 'SIGKILL')
-    subProcess = startLive()
-    res.json({
-      responseCode: '000000',
-      responseMsg: '重启成功',
-      data: null
-    })
-  } catch (err) {
-    res.json({
-      responseCode: '000001',
-      responseMsg: `${err}`,
-      data: null
-    })
-  }
-})
 if (config.env !== 'dev') {
   app.route('/*')
     .all(function(req, res, next) {
@@ -69,3 +51,40 @@ if (config.env !== 'dev') {
   }
   setImmediate(startHttpServer)
 }
+const NodeMediaServer = require('node-media-server');
+
+const liveConfig = {
+  rtmp: {
+    port: 1935,
+    chunk_size: 60000,
+    gop_cache: true,
+    ping: 30,
+    ping_timeout: 60
+  },
+  http: {
+    port: 7001,
+    allow_origin: '*'
+  },
+  auth: {
+    play: false,
+    publish: true,
+    secret: config.live.secret
+  }
+};
+
+const nms = new NodeMediaServer(liveConfig)
+nms.run();
+
+nms.on('prePublish', (id, StreamPath, args) => {
+  const liveHouseName = StreamPath.split('/')[2]
+  LiveHouse.updateOne({ liveHouseName: liveHouseName },{ status: '上播' }, function(err) {
+    TagPlatForm.error(`[Error] Opening MongoDB Error: ${err}`)
+  })
+});
+
+nms.on('donePublish', (id, StreamPath, args) => {
+  const liveHouseName = StreamPath.split('/')[2]
+  LiveHouse.updateOne({ liveHouseName: liveHouseName },{ status: '下播' }, function(err) {
+    TagPlatForm.error(`[Error] Opening MongoDB Error: ${err}`)
+  })
+});
