@@ -18,14 +18,11 @@
         <el-col :span="16">
           <el-input v-model="input" placeholder="请输入直播拉流地址"/>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="8">
           <el-button style="width:100%;" type="primary" @click="handleStartLiveClick">{{url ? '停止直播' : '开始直播'}}</el-button>
         </el-col>
-        <el-col :span="4">
-          <el-button style="width:100%;" type="primary" @click="handleReStartLiveClick">重启直播服务</el-button>
-        </el-col>
       </el-row>
-      <FlvPlayer v-if="url" :url="url" class="flvPlayer"/>
+      <FlvPlayer v-if="url" :url="url" :headers="headers" class="flvPlayer" ref="FlvPlayer"/>
       <ChatRoom v-if="!url"/>
     </el-col>
     <el-col :span="layout.right">
@@ -39,6 +36,7 @@ import CONSTANT from '@/constant'
 import Request from './request'
 import FlvPlayer from '@/components/flvPlayer';
 import ChatRoom from '@/components/ChatRoom'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Live',
   components: {
@@ -48,6 +46,7 @@ export default {
   data() {
     return {
       url: '',
+      headers: {},
       input: 'test.flv',
       layout: {
         left: 5,
@@ -69,20 +68,31 @@ export default {
       }]
     };
   },
+  computed: {
+    ...mapGetters(['token']),
+  },
+  beforeMount() {
+    this.getAllLiveHouse()
+  },
   methods: {
     handleStartLiveClick() {
-      if (!this.url) this.url = `${CONSTANT.IP}/liveServer/live/${this.input}`
-      else this.url = ''
+      if (!this.url) {
+        this.url = `${CONSTANT.IP}/live/play/live/${this.input}`
+        this.headers = {
+          'X-Authorization': this.token
+        }
+      } else {
+        this.$refs.FlvPlayer.flvPlayer.detachMediaElement()
+        this.$refs.FlvPlayer.flvPlayer.destroy()
+        this.url = ''
+      }
     },
-    handleReStartLiveClick() {
-      Request.restartLiveServer()
-        .then((res) => {
-          this.$message.success('重置直播服务成功')
-        })
-        .catch((err) => {
-          if (err.responseMsg) this.$message.error(`重置直播服务失败,${err.responseMsg}`)
-          else console.log(err)
-        })
+    getAllLiveHouse() {
+      Request.getLiveHouse().then((res) => {
+        console.log(res)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 };
