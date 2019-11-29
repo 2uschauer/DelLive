@@ -34,6 +34,11 @@ export default {
       type: String,
       require: false,
       default: '100%'
+    },
+    headers: {
+      type: Object,
+      require: false,
+      default: {}
     }
   },
   data() {
@@ -60,7 +65,9 @@ export default {
       const videoElement = this.$refs.videoElement;
       this.flvPlayer = flvjs.createPlayer({
         type: this.types,
-        url: this.url
+        url: this.url,
+      },{
+        headers: this.headers
       });
       this.flvPlayer.attachMediaElement(videoElement);
       this.flvPlayer.load();
