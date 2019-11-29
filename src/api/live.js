@@ -1,12 +1,21 @@
 import request from '@/utils/request'
 
-function restartLiveServer() {
+function getLiveHouse() {
   return request({
-    url: `/restart/live`,
+    url: `/live/getHouse`,
     method: 'post',
   })
 }
 
+function createLiveHouse(data) {
+  return request({
+    url: `/live/createHouse`,
+    method: 'post',
+    data
+  })
+}
+
 export default {
-  restartLiveServer
+  getLiveHouse,
+  createLiveHouse
 }
