@@ -42,12 +42,12 @@
 </div>
 </template>
 <script>
-import CONSTANT from '@/constant'
+// import CONSTANT from '@/constant'
 import Request from './request'
 import FlvPlayer from '@/components/flvPlayer';
 import ChatRoom from '@/components/ChatRoom'
 import { mapGetters } from 'vuex'
-const { Host, Protocol, Port } = CONSTANT
+// const { Host, Protocol, Port } = CONSTANT
 // import io from 'socket.io-client'
 // const socket = io(`${Protocol}://${Host}:${Port}`)
 export default {
@@ -106,7 +106,8 @@ export default {
         this.headers = {
           'X-Authorization': this.token
         }
-        this.url = `${Protocol}://${Host}:${Port}/api/live/play/live/${this.selectedLiveHouseName}.flv`
+        // ${Protocol}://${Host}:${Port}
+        this.url = `/api/live/play/live/${this.selectedLiveHouseName}.flv`
         // this.url = `http://127.0.0.1:7001/live/${this.input}.flv`
         console.log(this.url, this.headers)
       } else {
