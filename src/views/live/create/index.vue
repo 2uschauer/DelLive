@@ -82,10 +82,10 @@ export default {
     handleCreateClick() {
       const time = this.endDay ? parseInt(this.endDay.getTime() / 1000) : parseInt(new Date().getTime() / 1000 + 24 * 60 * 60)
       Request.createLiveHouse(this.liveHouseName, time, this.userName).then((res) => {
-        this.$message.success('重置直播服务成功')
+        this.$message.success('创建直播服务成功')
         this.result = res.data
       }).catch((err) => {
-        if (err.responseMsg) this.$message.error(`重置直播服务失败,${err.responseMsg}`)
+        if (err.responseMsg) this.$message.error(`创建直播服务失败,${err.responseMsg}`)
         else console.log(err)
       })
     }

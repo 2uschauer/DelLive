@@ -16,7 +16,14 @@
     <el-col :span="layout.center">
       <el-row type="flex" justify="center" :gutter="20" class="layer">
         <el-col :span="16">
-          <el-input v-model="input" placeholder="请输入直播拉流地址"/>
+           <el-select v-model="selectedLiveHouseName" placeholder="请选择直播间" style="width:100%;">
+            <el-option
+              v-for="item in liveHouseOptions"
+              :key="item._id"
+              :label="'直播间: ' + item.liveHouseName + ' ' + item.status"
+              :value="item.liveHouseName">
+            </el-option>
+          </el-select>
         </el-col>
         <el-col :span="8">
           <el-button style="width:100%;" type="primary" @click="handleStartLiveClick">{{url ? '停止直播' : '开始直播'}}</el-button>
@@ -45,9 +52,10 @@ export default {
   },
   data() {
     return {
+      liveHouseOptions: [],
+      selectedLiveHouseName: '',
       url: '',
       headers: {},
-      input: 'test',
       layout: {
         left: 5,
         center: 14,
@@ -77,11 +85,12 @@ export default {
   methods: {
     handleStartLiveClick() {
       if (!this.url) {
-        this.url = `${CONSTANT.IP}/api/live/play/live/${this.input}.flv`
-        // this.url = `http://127.0.0.1:7001/live/${this.input}.flv`
         this.headers = {
           'X-Authorization': this.token
         }
+        this.url = `${CONSTANT.IP}/api/live/play/live/${this.selectedLiveHouseName}.flv`
+        // this.url = `http://127.0.0.1:7001/live/${this.input}.flv`
+        console.log(this.url, this.headers)
       } else {
         this.$refs.FlvPlayer.flvPlayer.detachMediaElement()
         this.$refs.FlvPlayer.flvPlayer.destroy()
@@ -90,9 +99,11 @@ export default {
     },
     getAllLiveHouse() {
       Request.getLiveHouse().then((res) => {
-        console.log(res)
+        this.liveHouseOptions = res.data
+        this.$message.success('查询直播间成功')
       }).catch((err) => {
-        console.log(err)
+        if (err.responseMsg) this.$message.error(`创建直播服务失败,${err.responseMsg}`)
+        else console.log(err)
       })
     }
   }
