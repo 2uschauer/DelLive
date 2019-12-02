@@ -16,11 +16,10 @@ function clearAllInfo() {
 }
 
 function logout() {
-  store.dispatch('Logout')
-    .then(() => {
-      router.push({ path: '/login' })
-      window.location.reload()
-    })
+  store.dispatch('logout').then(() => {
+    router.push({ path: '/login' })
+    window.location.reload()
+  })
 }
 
 function checkAuth(err) {

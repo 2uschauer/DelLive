@@ -23,6 +23,7 @@
 </template>
 <script>
 import _ from 'lodash'
+import auth from '@/utils/auth'
 export default {
   name: 'navMenu',
   data() {
@@ -58,11 +59,7 @@ export default {
     },
     handleSubMenuClick(item) {
       if (item.name === '登出') {
-        this.$store.dispatch('logout')
-          .then(() => {
-            this.$router.push({ path: '/login' })
-            window.location.reload()
-          })
+        auth.logout()
       } else {
         this.$router.push({ path: `${item.path}` })
         this.currentRoutePath = item.path

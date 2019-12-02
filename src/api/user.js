@@ -28,7 +28,7 @@ function getRoutesByToken() {
 function logout() {
   return request({
     url: `${BACKEND_URL}/user/logout`,
-    method: 'post',
+    method: 'post'
   })
 }
 

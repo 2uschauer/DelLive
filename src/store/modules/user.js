@@ -91,8 +91,12 @@ const app = {
     },
     logout() {
       return new Promise((resolve, reject) => {
-        auth.clearAllInfo()
-        resolve()
+        userAPI.logout().then(() => {
+          auth.clearAllInfo()
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
       })
     }
   }
