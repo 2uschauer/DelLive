@@ -53,7 +53,8 @@ const createLiveHouse = function(req,res) {
   })
 }
 const getLiveHouse = function(req, res) {
-  LiveHouse.find({}).then((docs) => {
+  const params = req.body
+  LiveHouse.find({ status: params.status }).then((docs) => {
     res.json({
       responseCode: '000000',
       responseMsg: '登陆成功',

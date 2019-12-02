@@ -14,19 +14,22 @@
       </div>
     </el-col>
     <el-col :span="layout.center">
-      <el-row type="flex" justify="center" :gutter="20" class="layer">
-        <el-col :span="16">
-           <el-select v-model="selectedLiveHouseName" placeholder="请选择直播间" style="width:100%;">
+      <el-row type="flex" justify="center" :gutter="12" class="layer">
+        <el-col :span="14">
+           <el-select v-model="selectedLiveHouseName" placeholder="请选择直播间" style="width:100%;" no-data-text="暂无直播中的直播间>w<">
             <el-option
               v-for="item in liveHouseOptions"
               :key="item._id"
-              :label="'直播间: ' + item.liveHouseName + ' ' + item.status"
+              :label="'直播间: ' + item.liveHouseName + ' 直播中w'"
               :value="item.liveHouseName">
             </el-option>
           </el-select>
         </el-col>
-        <el-col :span="8">
-          <el-button style="width:100%;" type="primary" @click="handleStartLiveClick">{{url ? '停止直播' : '开始直播'}}</el-button>
+        <el-col :span="6">
+        <el-button style="width:100%;" type="primary" @click="getAllLiveHouse">查询直播中的直播间</el-button>
+        </el-col>
+        <el-col :span="4">
+          <el-button style="width:100%;" type="primary" @click="handleStartLiveClick" :disabled="selectedLiveHouseName.length===0">{{url ? '停止观看直播' : '开始观看直播'}}</el-button>
         </el-col>
       </el-row>
       <FlvPlayer v-if="url" :url="url" :headers="headers" class="flvPlayer" ref="FlvPlayer"/>
@@ -98,8 +101,9 @@ export default {
       }
     },
     getAllLiveHouse() {
-      Request.getLiveHouse().then((res) => {
+      Request.getLiveHouse('上播').then((res) => {
         this.liveHouseOptions = res.data
+        this.selectedLiveHouseName = ''
         this.$message.success('查询直播间成功')
       }).catch((err) => {
         if (err.responseMsg) this.$message.error(`创建直播服务失败,${err.responseMsg}`)

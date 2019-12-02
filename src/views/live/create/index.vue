@@ -5,7 +5,7 @@
         <el-row type="flex" :gutter="12">
           <el-col :span="9">
             <el-input style="width:100%;" v-model="liveHouseName" placeholder="请输入直播间名称"/>
-            <div style="font-size: 8px;padding: 4px 0;color:#B4B4B4;"><span style="color:red;">*</span>直播间名称必填，过期时间至少要一天以后</div>
+            <div style="font-size: 8px;padding: 4px 0;color:#B4B4B4;"><span style="color:red;">*</span>直播间名称必填，直播间销毁时间至少要一天以后</div>
           </el-col>
           <el-col :span="9">
             <el-date-picker
@@ -77,6 +77,9 @@ export default {
       if (this.endDay) return this.liveHouseName === '' || (parseInt(this.endDay.getTime() - new Date()) / 1000 <= 24 * 60 * 60)
       else return this.liveHouseName === ''
     }
+  },
+  beforeMount() {
+    this.liveHouseName = this.userName
   },
   methods: {
     handleCreateClick() {

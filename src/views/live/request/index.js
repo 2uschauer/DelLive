@@ -1,8 +1,9 @@
 import live from '@/api/live'
 
-function getLiveHouse() {
+function getLiveHouse(status) {
+  const param = Object.assign({}, { status })
   return new Promise((resolve,reject) => {
-    live.getLiveHouse()
+    live.getLiveHouse(param)
       .then((res) => {
         resolve(res)
       })
