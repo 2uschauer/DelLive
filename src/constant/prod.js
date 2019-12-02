@@ -1,7 +1,7 @@
 const prodConfig = {
   BASE_URL: '/',
   Protocol: 'https',
-  Host: '64.64.238.145',
+  Host: 'www.die.live',
   Port: '443',
 }
 
