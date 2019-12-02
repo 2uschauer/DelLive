@@ -4,7 +4,7 @@ import { merge } from 'lodash-es'
 const all = {
   env: process.env.NODE_ENV,
   SERVICE_PATH: process.env.SERVICE_PATH,
-  BACKEND_URL: '/backend',
+  BACKEND_URL: '/api',
   SUCCESS_CODE: '000000',
   ERROR_CODE: '000001',
   SYSTEM_FAIL_CODE: '-100',

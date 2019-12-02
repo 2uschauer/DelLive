@@ -1,8 +1,10 @@
 import request from '@/utils/request'
+import CONSTANT from '@/constant'
+const { BACKEND_URL } = CONSTANT
 
 function signIn(data) {
   return request({
-    url: `/user/auth/token`,
+    url: `${BACKEND_URL}/user/auth/token`,
     method: 'post',
     data
   })
@@ -10,7 +12,7 @@ function signIn(data) {
 
 function signUp(data) {
   return request({
-    url: `/user/signUp`,
+    url: `${BACKEND_URL}/user/signUp`,
     method: 'post',
     data
   })
@@ -18,14 +20,14 @@ function signUp(data) {
 
 function getRoutesByToken() {
   return request({
-    url: `/user/auth/getRoutesByToken`,
+    url: `${BACKEND_URL}/user/auth/getRoutesByToken`,
     method: 'post',
   })
 }
 
 function logout() {
   return request({
-    url: `/user/logout`,
+    url: `${BACKEND_URL}/user/logout`,
     method: 'post',
   })
 }

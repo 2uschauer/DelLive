@@ -47,7 +47,7 @@ export default {
     return {
       url: '',
       headers: {},
-      input: 'test.flv',
+      input: 'test',
       layout: {
         left: 5,
         center: 14,
@@ -77,7 +77,8 @@ export default {
   methods: {
     handleStartLiveClick() {
       if (!this.url) {
-        this.url = `${CONSTANT.IP}/live/play/live/${this.input}`
+        this.url = `${CONSTANT.IP}/api/live/play/live/${this.input}.flv`
+        // this.url = `http://127.0.0.1:7001/live/${this.input}.flv`
         this.headers = {
           'X-Authorization': this.token
         }

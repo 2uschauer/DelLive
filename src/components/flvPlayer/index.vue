@@ -66,8 +66,13 @@ export default {
       this.flvPlayer = flvjs.createPlayer({
         type: this.types,
         url: this.url,
+        cors: true,
+        isLive: true,
       },{
-        headers: this.headers
+        headers: this.headers,
+        enableWorker: true,
+        enableStashBuffer: false,
+        stashInitialSize: 128,// 减少首桢显示等待时长
       });
       this.flvPlayer.attachMediaElement(videoElement);
       this.flvPlayer.load();
