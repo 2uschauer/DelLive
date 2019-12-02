@@ -1,11 +1,13 @@
 require('promise.prototype.finally').shim();
+const moment = require('moment')
 const { TagPlatForm } = require('../../utils/log')
 const { RESULT } = require('../../utils/returnJson')
 const { User, Role, InviteCode } = require('../../utils/mongo')
 const { redisSet, redisGet, redisDelete } = require('../../utils/redis')
 const { encodePasseord, getToken } = require('../../utils')
+const dateFormat = `${moment().format('YYYY-MM-DD HH:mm:ss:SSS')}`
 const hanldeSignIn = function(req,res) {
-  TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
+  TagPlatForm.info(`${dateFormat} [Info] Request [${req.originalUrl}] processing!`)
   const params = req.body
   let token = null
   params.password = encodePasseord(params.password)
@@ -23,7 +25,7 @@ const hanldeSignIn = function(req,res) {
       data: token
     })
   }).catch((err) => {
-    if (err) TagPlatForm.error(`[Error] Request [${req.originalUrl}] Error: ${err}`)
+    if (err) TagPlatForm.error(`${dateFormat} [Error] Request [${req.originalUrl}] Error: ${err}`)
     res.json({
       responseCode: '000001',
       responseMsg: err,
@@ -32,7 +34,7 @@ const hanldeSignIn = function(req,res) {
   })
 }
 const hanldeSignUp = function(req,res) {
-  TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
+  TagPlatForm.info(`${dateFormat} [Info] Request [${req.originalUrl}] processing!`)
   const params = req.body
   params.password = encodePasseord(params.password)
   let token = null
@@ -74,7 +76,7 @@ const hanldeSignUp = function(req,res) {
         data: token
       })
     }).catch((err) => {
-      if (err) TagPlatForm.error(`[Error] Request [${req.originalUrl}] Error: ${err}`)
+      if (err) TagPlatForm.error(`${dateFormat} [Error] Request [${req.originalUrl}] Error: ${err}`)
       res.json({
         responseCode: '000001',
         responseMsg: err,
@@ -84,7 +86,7 @@ const hanldeSignUp = function(req,res) {
   })
 }
 const getRoutesByToken = function(req,res) {
-  TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
+  TagPlatForm.info(`${dateFormat} [Info] Request [${req.originalUrl}] processing!`)
   const token = req.get('X-Authorization')
   redisGet(token).then((userName) => {
     if (userName) {
@@ -103,7 +105,7 @@ const getRoutesByToken = function(req,res) {
       res.json(RESULT.UNAUTHORIZATION)
     }
   }).catch((err) => {
-    if (err) TagPlatForm.error(`[Error] Request [${req.originalUrl}] Error: ${err}`)
+    if (err) TagPlatForm.error(`${dateFormat} [Error] Request [${req.originalUrl}] Error: ${err}`)
     res.json({
       responseCode: '000001',
       responseMsg: err,
@@ -112,7 +114,7 @@ const getRoutesByToken = function(req,res) {
   })
 }
 const handleLogout = function(req,res) {
-  TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
+  TagPlatForm.info(`${dateFormat} [Info] Request [${req.originalUrl}] processing!`)
   const token = req.get('X-Authorization')
   redisDelete(token).then(() => {
     res.json({

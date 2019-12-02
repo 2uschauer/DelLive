@@ -17,10 +17,14 @@ const all = {
   root: root,
   mongo: {
     port: 9881,
-    url: '127.0.0.1',
+    host: '127.0.0.1',
     db: 'live',
     userName: 'live',
     password: 'v7f5WQHqkw',
+  },
+  redis: {
+    port: 9882,
+    host: '127.0.0.1',
   },
   live: {
     secret: 'DieLive'

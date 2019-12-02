@@ -47,6 +47,9 @@ import Request from './request'
 import FlvPlayer from '@/components/flvPlayer';
 import ChatRoom from '@/components/ChatRoom'
 import { mapGetters } from 'vuex'
+const { Host, Protocol, Port } = CONSTANT
+// import io from 'socket.io-client'
+// const socket = io(`${Protocol}://${Host}:${Port}`)
 export default {
   name: 'Live',
   components: {
@@ -83,6 +86,7 @@ export default {
     ...mapGetters(['token']),
   },
   beforeMount() {
+    // this.handleChat()
     this.getAllLiveHouse()
     window.addEventListener('keypress',this.handleEnterPressed)
   },
@@ -102,7 +106,7 @@ export default {
         this.headers = {
           'X-Authorization': this.token
         }
-        this.url = `${CONSTANT.IP}/api/live/play/live/${this.selectedLiveHouseName}.flv`
+        this.url = `${Protocol}://${Host}:${Port}/api/live/play/live/${this.selectedLiveHouseName}.flv`
         // this.url = `http://127.0.0.1:7001/live/${this.input}.flv`
         console.log(this.url, this.headers)
       } else {
@@ -120,7 +124,16 @@ export default {
         if (err.responseMsg) this.$message.error(`创建直播服务失败,${err.responseMsg}`)
         else console.log(err)
       })
-    }
+    },
+    // handleChat() {
+    //   console.log(socket)
+    //   socket.on('connect', function() {
+    //     console.log(111)
+    //   });
+    //   socket.emit('chat', '111',function(data) {
+    //     console.log(data)
+    //   });
+    // }
   }
 };
 </script>

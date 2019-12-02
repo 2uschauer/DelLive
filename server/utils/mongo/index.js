@@ -1,13 +1,15 @@
 'use strict'
 const { TagPlatForm } = require('../log')
 const mongoose = require('mongoose');
+const moment = require('moment')
+const dateFormat = `${moment().format('YYYY-MM-DD HH:mm:ss:SSS')}`
 const { mongo } = require('../../config')
-const url = `mongodb://${mongo.userName}:${mongo.password}@${mongo.url}:${mongo.port}/${mongo.db}`
+const url = `mongodb://${mongo.userName}:${mongo.password}@${mongo.host}:${mongo.port}/${mongo.db}`
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection;
-db.on('error', function(err) { TagPlatForm.error(`[Error] Opening MongoDB Error: ${err}`) });
-db.on('connected', function() { TagPlatForm.info(`[Info] MongoDB Conected at ${url}!`) });
-db.on('disconnected', function() { TagPlatForm.info(`[Info] MongoDB Disconnected at ${url}!`) });
+db.on('error', function(err) { TagPlatForm.error(`${dateFormat} [Error] Opening MongoDB Error: ${err}`) });
+db.on('connected', function() { TagPlatForm.info(`${dateFormat} [Info] MongoDB Conected at ${url}!`) });
+db.on('disconnected', function() { TagPlatForm.info(`${dateFormat} [Info] MongoDB Disconnected at ${url}!`) });
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   userName: { type: String },
