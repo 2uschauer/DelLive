@@ -80,8 +80,18 @@ export default {
   },
   beforeMount() {
     this.liveHouseName = this.userName
+    window.addEventListener('keypress',this.handleEnterPressed)
+  },
+  beforeDestroy() {
+    window.removeEventListener('keypress',this.handleEnterPressed)
   },
   methods: {
+    handleEnterPressed(e) {
+      const keyCode = e.keyCode
+      if (keyCode === 13) {
+        this.handleCreateClick()
+      }
+    },
     handleCreateClick() {
       const time = this.endDay ? parseInt(this.endDay.getTime() / 1000) : parseInt(new Date().getTime() / 1000 + 24 * 60 * 60)
       Request.createLiveHouse(this.liveHouseName, time, this.userName).then((res) => {

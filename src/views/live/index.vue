@@ -84,8 +84,19 @@ export default {
   },
   beforeMount() {
     this.getAllLiveHouse()
+    window.addEventListener('keypress',this.handleEnterPressed)
+  },
+  beforeDestroy() {
+    window.removeEventListener('keypress',this.handleEnterPressed)
   },
   methods: {
+    handleEnterPressed(e) {
+      const keyCode = e.keyCode
+      if (keyCode === 13) {
+        if (this.selectedLiveHouseName) this.handleStartLiveClick()
+        else this.getAllLiveHouse()
+      }
+    },
     handleStartLiveClick() {
       if (!this.url) {
         this.headers = {

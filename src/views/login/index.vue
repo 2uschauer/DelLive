@@ -16,16 +16,16 @@
       <div class="From">
         <el-form label-position="top" :model="signForm" :rules="signRules" ref="signFrom">
           <el-form-item label="EMAIL" v-if="signStatus==='up'" prop="email">
-            <el-input v-model="signForm.email" placeholder="Enter Your Email Address"></el-input>
+            <el-input v-model="signForm.email" placeholder="Enter Your Email Address" @keyup.enter.native="handleSignClick"></el-input>
           </el-form-item>
           <el-form-item label="USER NAME" prop="userName">
-            <el-input v-model="signForm.userName" placeholder="Enter Your User Name"></el-input>
+            <el-input v-model="signForm.userName" placeholder="Enter Your User Name" @keyup.enter.native="handleSignClick"></el-input>
           </el-form-item>
           <el-form-item label="PASSWORD" prop="password">
-            <el-input v-model="signForm.password" placeholder="Enter Your Password" show-password></el-input>
+            <el-input v-model="signForm.password" placeholder="Enter Your Password" show-password @keyup.enter.native="handleSignClick"></el-input>
           </el-form-item>
           <el-form-item label="Invite Code" v-if="signStatus==='up'" prop="inviteCode">
-            <el-input v-model="signForm.inviteCode" placeholder="Enter Your Invite Code"></el-input>
+            <el-input v-model="signForm.inviteCode" placeholder="Enter Your Invite Code" @keyup.enter.native="handleSignClick"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="primary" round class="signInButton" @click="handleSignClick" :loading="loading">{{signStatus === 'in' ? 'Sign In' : 'Sign Up'}}</el-button>
