@@ -2,7 +2,7 @@ require('promise.prototype.finally').shim();
 const { TagPlatForm } = require('../../utils/log')
 const { RESULT } = require('../../utils/returnJson')
 const { User, Role, InviteCode } = require('../../utils/mongo')
-const { redisSet, redisGet } = require('../../utils/redis')
+const { redisSet, redisGet, redisDelete } = require('../../utils/redis')
 const { encodePasseord, getToken } = require('../../utils')
 const hanldeSignIn = function(req,res) {
   TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
@@ -111,8 +111,26 @@ const getRoutesByToken = function(req,res) {
     })
   })
 }
+const handleLogout = function(req,res) {
+  TagPlatForm.info(`[Info] Request [${req.originalUrl}] processing!`)
+  const token = req.get('X-Authorization')
+  redisDelete(token).then(() => {
+    res.json({
+      responseCode: '000000',
+      responseMsg: '登出成功！',
+      data: null
+    })
+  }).catch((err) => {
+    res.json({
+      responseCode: '000001',
+      responseMsg: err,
+      data: err || null
+    })
+  })
+}
 module.exports = {
   hanldeSignIn,
   hanldeSignUp,
-  getRoutesByToken
+  getRoutesByToken,
+  handleLogout
 }
