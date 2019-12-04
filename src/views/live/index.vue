@@ -122,15 +122,6 @@ export default {
         else console.log(err)
       })
     },
-    // handleChat() {
-    //   console.log(socket)
-    //   socket.on('connect', function() {
-    //     console.log(111)
-    //   });
-    //   socket.emit('chat', '111',function(data) {
-    //     console.log(data)
-    //   });
-    // }
   }
 };
 </script>

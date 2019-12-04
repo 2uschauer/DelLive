@@ -10,8 +10,6 @@ const connectRedisPublish = function(socket) {
     userName = data
     return redisGet(userName)
   }).then((socketId) => {
-    console.log(socketId,'socketId')
-    console.log(socket.id,'socket.id')
     if (socketId) {
       if (socketId === socket.id) return Promise.resolve()
       else {
@@ -31,7 +29,6 @@ const connectRedisPublish = function(socket) {
 
 const disconnectRedisPublish = function(socket) {
   const token = socket.handshake.headers['x-authorization']
-  console.log(token,'token')
   let userName = null
   redisGet(token).then((data) => {
     userName = data

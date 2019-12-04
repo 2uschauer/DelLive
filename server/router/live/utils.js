@@ -1,5 +1,8 @@
 'use strict'
 const md5 = require('blueimp-md5')
+const moment = require('moment')
+const { TagPlatForm } = require('../../utils/log')
+const dateFormat = `${moment().format('YYYY-MM-DD HH:mm:ss:SSS')}`
 const config = require('../../config')
 const { LiveHouse } = require('../../utils/mongo')
 const createLiveHouse = function(req,res) {
@@ -49,7 +52,7 @@ const createLiveHouse = function(req,res) {
     })
   }).catch((err) => {
     if (err.responseMsg && err.responseCode) res.json(err)
-    else console.log(err)
+    else TagPlatForm.error(`${dateFormat} [Error] Request Error: ${err}`)
   })
 }
 const getLiveHouse = function(req, res) {
@@ -62,7 +65,7 @@ const getLiveHouse = function(req, res) {
     })
   }).catch((err) => {
     if (err.responseMsg && err.responseCode) res.json(err)
-    else console.log(err)
+    else TagPlatForm.error(`${dateFormat} [Error] Request Error: ${err}`)
   })
 }
 module.exports = {

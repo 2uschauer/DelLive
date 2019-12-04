@@ -30,23 +30,18 @@ const initSocket = function(token) {
   })
   const socket = decorateSocket(manager.socket('/'))
   socket.on('connect', () => {
-    console.log('connect')
     socket.trigger('connect')
   })
   socket.on('disconnect', () => {
-    console.log('disconnect')
     socket.trigger('disconnect')
   })
   socket.on('logout', () => {
-    console.log('logout')
     socket.trigger('logout')
   })
   socket.on('connected', () => {
-    console.log('connected')
     socket.trigger('connected')
   })
   socket.on('disconnected', () => {
-    console.log('disconnected')
     socket.trigger('disconnected')
   })
   return socket
