@@ -42,14 +42,10 @@
 </div>
 </template>
 <script>
-// import CONSTANT from '@/constant'
 import Request from './request'
 import FlvPlayer from '@/components/flvPlayer';
 import ChatRoom from '@/components/ChatRoom'
 import { mapGetters } from 'vuex'
-// const { Host, Protocol, Port } = CONSTANT
-// import io from 'socket.io-client'
-// const socket = io(`${Protocol}://${Host}:${Port}`)
 export default {
   name: 'Live',
   components: {

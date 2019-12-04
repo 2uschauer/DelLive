@@ -35,6 +35,7 @@
 </template>
 <script>
 import { validateEmail, validateUserName } from '@/utils/validate'
+import { initSocket } from '@/utils/socket'
 export default {
   data() {
     const userNameValidator = (rule, value, callback) => {
@@ -125,8 +126,9 @@ export default {
             this.$store.dispatch('signIn', signForm).then((res) => {
               this.$message.success(`${res.responseMsg}`)
               this.getRoutesByToken(res.data)
+              this.$store.dispatch('initSocket',initSocket(res.data))
             }).catch((err) => {
-              if (err) this.$message.error(`${err.responseMsg}`)
+              if (err.responseMsg) this.$message.error(`${err.responseMsg}`)
               else console.error(err)
             }).finally(() => {
               this.loading = false

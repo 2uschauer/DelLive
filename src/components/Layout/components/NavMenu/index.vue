@@ -44,6 +44,7 @@ export default {
     })
     this.router = router
     this.currentRoutePath = this.$route.path
+    this.registerSocket()
   },
   methods: {
     handleMenuClick(index) {
@@ -64,6 +65,10 @@ export default {
         this.$router.push({ path: `${item.path}` })
         this.currentRoutePath = item.path
       }
+    },
+    registerSocket() {
+      const { socket } = this.$store.getters
+      socket.register('logout',auth.logout)
     }
   }
 }

@@ -6,13 +6,15 @@ const app = {
     userName: '',
     routes: [],
     token: '',
-    routesStatus: 'unset'
+    routesStatus: 'unset',
+    socket: null,
   },
   getters: {
     userName: (state) => state.userName,
     routes: (state) => state.routes,
     token: (state) => state.token,
-    routesStatus: (state) => state.routesStatus
+    routesStatus: (state) => state.routesStatus,
+    socket: (state) => state.socket
   },
   mutations: {
     'SET_USERNAME': (state, userName) => {
@@ -26,6 +28,13 @@ const app = {
     },
     'SET_ROUTES_STATUS': (state, routesStatus) => {
       state.routesStatus = routesStatus
+    },
+    'INIT_SOCKET': (state, socket) => {
+      state.socket = socket
+    },
+    'CLEAR_SOCKET': (state) => {
+      state.socket.close()
+      state.socket = null
     },
   },
   actions: {
@@ -86,13 +95,17 @@ const app = {
           })
       })
     },
+    initSocket({ commit }, socket) {
+      commit('INIT_SOCKET', socket)
+    },
     setRoutesStatus({ commit }, status) {
       commit('SET_ROUTES_STATUS', status)
     },
-    logout() {
+    logout({ commit }) {
       return new Promise((resolve, reject) => {
         userAPI.logout().then(() => {
           auth.clearAllInfo()
+          commit('CLEAR_SOCKET')
           resolve()
         }).catch((err) => {
           reject(err)
