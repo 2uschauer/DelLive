@@ -1,4 +1,6 @@
 import io from 'socket.io-client'
+import CONSTANT from '@/constant'
+const { Protocol, Host, Port } = CONSTANT
 const socketEventQueue = {}
 const decorateSocket = function (socket) {
   socket.register = (event, fn) => {
@@ -14,7 +16,7 @@ const decorateSocket = function (socket) {
   return socket
 }
 const initSocket = function(token) {
-  const manager = new io.Manager('/',{
+  const manager = new io.Manager(`${Protocol}://${Host}:${Port}`,{
     path: '/socket',
     reconnectionAttempts: 10,
     reconnectionDelay: 3000,
