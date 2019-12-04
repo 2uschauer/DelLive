@@ -3,20 +3,16 @@
 // const path = require('path')
 // const liveServerPath = path.join(__dirname,'../../../livego')
 const jwt = require('jwt-simple');
-
 const encodePasseord = function(password) {
   return jwt.encode(password, 'userPassword' , 'HS512')
 }
 const getToken = function(userName) {
-  return jwt.encode(userName, 'DieLive' , 'HS512')
-}
-const getUserName = function(userName) {
-  return jwt.decode(userName, 'DieLive' , 'HS512')
+  const secret = new Date().getTime().toString()
+  return jwt.encode(userName, secret , 'HS512')
 }
 module.exports = {
   encodePasseord,
   getToken,
-  getUserName
 }
 // function onData(data) {
 //   process.stdout.write(data);
