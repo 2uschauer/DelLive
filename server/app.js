@@ -10,7 +10,7 @@ const config = require('./config')
 const returnJson = require('./utils/returnJson')
 const { TagPlatForm } = require('./utils/log')
 const { liveServer } = require('./utils/liveServer')
-// const SocketServer = require('./utils/socketServer')
+const SocketServer = require('./utils/socketServer')
 const app = express()
 
 require('./utils/expressMiddleware')(app)
@@ -39,28 +39,17 @@ const server = config.env === 'dev' ? http.createServer(app) : https.createServe
   key: fs.readFileSync(`${config.ceFilePath}/privkey.pem`),
   cert: fs.readFileSync(`${config.ceFilePath}/cert.pem`)
 },app)
-/*
-const socketServer = SocketServer(server, {
-  serveClient: false,
-  pingInterval: 20000,
-  pingTimeout: 20000,
-  transports: ['polling','websocket'],
-  origins: ['*:*']
-})
-*/
 function startServer() {
   liveServer.run()
-  /*
-  socketServer.on('connection', function(socketServer) {
-    console.log('a user connected');
-    socketServer.on('disconnect', function() {
-      console.log('user disconnected');
-    });
-    socketServer.on('chat', function(msg) {
-      console.log('message: ' + msg);
-    });
-  });
-  */
+  const socketServer = new SocketServer(server, {
+    path: '/socket',
+    serveClient: false,
+    pingInterval: 20000,
+    pingTimeout: 20000,
+    transports: ['polling','websocket'],
+    origins: ['*:*']
+  })
+  socketServer.register(require('./utils/socketServer/handler').handlerRegister(socketServer.socket))
   server.listen(config.port, function() {
     console.info(`Express server listening on ${config.port}`,`environment is ${process.env.NODE_ENV}`)
   })
