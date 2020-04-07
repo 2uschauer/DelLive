@@ -9,5 +9,5 @@ module.exports = {
     appIntranetPrefix: 'http://127.0.0.1:7001'
   },
   thirdPartAppInteranetPrefix: 'http://127.0.0.1',
-  ceFilePath: '/ce'
+  ceFilePath: '/etc/letsencrypt/live/www.die.live'
 }
