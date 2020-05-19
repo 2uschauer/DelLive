@@ -18,18 +18,7 @@ require('./utils/expressMiddleware')(app)
 app.use('/api',require('./router')())
 
 if (config.env !== 'dev') {
-  app.route('/').all(function(req, res, next) {
-    TagPlatForm.info(`/ all protocol: ${req.protocol},hostname: ${req.hostname}`)
-    if (req.protocol === 'http') {
-      res.redirect(301, `https://www.die.live`);
-    } else next()
-  })
-  app.route('/**').all(function(req, res, next) {
-    TagPlatForm.info(`/** all protocol: ${req.protocol},hostname: ${req.hostname}`)
-    if (req.protocol === 'http') {
-      res.redirect(301, `https://www.die.live`);
-    } else next()
-  }).get(function(req, res) {
+  app.route('/**').get(function(req, res) {
     res.sendFile(path.resolve(app.get('appPath'),'index.html'))
   })
 }
@@ -62,7 +51,15 @@ function startServer() {
 setImmediate(startServer)
 
 if (config.env !== 'dev') {
-  const httpServer = http.createServer(app)
+  const httpExpress = require('express')
+  const httpApp = httpExpress()
+  httpApp.route('/**').all(function(req, res, next) {
+    TagPlatForm.info(`/** all protocol: ${req.protocol},hostname: ${req.hostname}`)
+    if (req.protocol === 'http') {
+      res.redirect(301, `https://www.die.live`);
+    } else next()
+  })
+  const httpServer = http.createServer(httpApp)
   // eslint-disable-next-line no-inner-declarations
   function startHttpServer() {
     httpServer.listen(config.httpPort, function() {
