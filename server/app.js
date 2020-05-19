@@ -18,19 +18,20 @@ require('./utils/expressMiddleware')(app)
 app.use('/api',require('./router')())
 
 if (config.env !== 'dev') {
-  app.route('/**')
-    .all(function(req, res, next) {
-      TagPlatForm.info(`all protocol: ${req.protocol},hostname: ${req.hostname}`)
-      if (req.protocol === 'http') {
-        res.redirect(301, `https://www.die.live`);
-      } else next()
-    })
-    .get(function(req, res) {
-      TagPlatForm.info(`get protocol: ${req.protocol},hostname: ${req.hostname}`)
-      if (req.protocol === 'http') {
-        res.redirect(301, `https://www.die.live`);
-      } else res.sendFile(path.resolve(app.get('appPath'),'index.html'))
-    })
+  app.route('/').all(function(req, res, next) {
+    TagPlatForm.info(`/ all protocol: ${req.protocol},hostname: ${req.hostname}`)
+    if (req.protocol === 'http') {
+      res.redirect(301, `https://www.die.live`);
+    } else next()
+  })
+  app.route('/**').all(function(req, res, next) {
+    TagPlatForm.info(`/** all protocol: ${req.protocol},hostname: ${req.hostname}`)
+    if (req.protocol === 'http') {
+      res.redirect(301, `https://www.die.live`);
+    } else next()
+  }).get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath'),'index.html'))
+  })
 }
 
 app.use(function(error, req, res, next) {
