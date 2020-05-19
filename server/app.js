@@ -15,27 +15,23 @@ const app = express()
 
 require('./utils/expressMiddleware')(app)
 
-if (config.env !== 'prod') {
-  app.route('**').all(function(req, res, next) {
-    TagPlatForm.info(`protocol: ${req.protocol},hostname: ${req.hostname}`)
-    next()
-  })
-}
+app.use('/api',require('./router')())
 
 if (config.env !== 'dev') {
-  app.route('**')
+  app.route('/**')
     .all(function(req, res, next) {
-      TagPlatForm.info(`protocol: ${req.protocol},hostname: ${req.hostname}`)
+      TagPlatForm.info(`all protocol: ${req.protocol},hostname: ${req.hostname}`)
       if (req.protocol === 'http') {
         res.redirect(301, `https://www.die.live`);
       } else next()
     })
     .get(function(req, res) {
-      res.sendFile(path.resolve(app.get('appPath'),'index.html'))
+      TagPlatForm.info(`get protocol: ${req.protocol},hostname: ${req.hostname}`)
+      if (req.protocol === 'http') {
+        res.redirect(301, `https://www.die.live`);
+      } else res.sendFile(path.resolve(app.get('appPath'),'index.html'))
     })
 }
-
-app.use('/api',require('./router')())
 
 app.use(function(error, req, res, next) {
   TagPlatForm.error(`${dateFormat} [Error]Request ${req.originalUrl} Error: ${error}`)
