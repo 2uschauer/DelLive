@@ -16,14 +16,14 @@ const app = express()
 require('./utils/expressMiddleware')(app)
 
 if (config.env !== 'prod') {
-  app.route('/**').all(function(req, res, next) {
+  app.route('**').all(function(req, res, next) {
     TagPlatForm.info(`protocol: ${req.protocol},hostname: ${req.hostname}`)
     next()
   })
 }
 
 if (config.env !== 'dev') {
-  app.route('/**')
+  app.route('**')
     .all(function(req, res, next) {
       TagPlatForm.info(`protocol: ${req.protocol},hostname: ${req.hostname}`)
       if (req.protocol === 'http') {
