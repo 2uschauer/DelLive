@@ -18,8 +18,9 @@ require('./utils/expressMiddleware')(app)
 app.use('/api',require('./router')())
 
 if (config.env !== 'dev') {
-  app.route('/*')
+  app.route('/**')
     .all(function(req, res, next) {
+      console.log(req.protocol,req.hostname)
       if (req.protocol === 'http') {
         res.redirect(301, `https://www.die.live`);
       } else next()
