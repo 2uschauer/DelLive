@@ -10,5 +10,6 @@ module.exports = {
   ziker: {
     appIntranetPrefix: 'http://127.0.0.1:7001'
   },
+  cloudPrefix: 'http://127.0.0.1:8082',
   thirdPartAppInteranetPrefix: 'http://127.0.0,1'
 }
