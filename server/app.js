@@ -16,7 +16,6 @@ const app = express()
 require('./utils/expressMiddleware')(app)
 
 app.use('/api',require('./router')())
-app.use('/cloud',require('./router/cloud')())
 
 if (config.env !== 'dev') {
   app.route('/**').get(function(req, res) {
